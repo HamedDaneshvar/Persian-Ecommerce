@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.utils.translation import gettext as _
 from utils.general_model import GeneralModel
 
@@ -22,6 +23,9 @@ class Category(GeneralModel):
 
 	def __str__(self):
 		return self.name
+
+	def get_absolute_url(self):
+		return reverse('shop:product_list_by_category', args=[self.slug,])
 
 
 class Product(GeneralModel):
@@ -62,4 +66,7 @@ class Product(GeneralModel):
 	
 	def __str__(self):
 		return self.name
+
+	def get_absolute_url(self):
+		return reverse('shop:product_detail', args=[self.id, self.slug,])
 		
