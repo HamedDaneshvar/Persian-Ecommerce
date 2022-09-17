@@ -1,3 +1,9 @@
 @media (min-width: 992px) {
 	.qty-text {width: 3.5rem !important;}
 }
+.cart-badge {
+	float: right;
+    font-size: 0.9rem;
+    position: relative;
+    top: -0.6rem;
+}

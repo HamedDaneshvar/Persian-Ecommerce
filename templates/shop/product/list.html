@@ -203,10 +203,12 @@
 				<!-- Single Catagory-->
 				<div class="col-4 mx-auto"><a class="shadow-sm" href="{{ category.get_absolute_url }}"><img src="" alt="">{{ category.name }}</a></div>
 			{% else %}
-				{% for category in categories %}
-				<!-- Single Catagory-->
-				<div class="col-4"><a class="shadow-sm" href="{{ category.get_absolute_url }}"><img src="" alt="">{{ category.name }}</a></div>
-				{% endfor %}
+				<div class="owl-carousel owl-theme">
+					{% for category in categories %}
+					<!-- Single Catagory-->
+					<div class="item justify-content-center"><a class="shadow-sm" href="{{ category.get_absolute_url }}"><img src="" alt="">{{ category.name }}</a></div>
+					{% endfor %}
+				</div>
 			{% endif %}
 		</div>
 	</div>
@@ -260,5 +262,30 @@
 
 
 {% block domready %}
+<script>
+	$('.owl-carousel').owlCarousel({
+		loop:true,
+		rtl:true,
+		margin:10,
+		responsiveClass:false,
+		responsive:{
+			0:{
+				items:1,
+				nav:false,
+			},
+			480:{
+				items:2,
+				nav:false,
+			},
+			768:{
+				items:3,
+				nav:false,
+			},
+		}
+	})
 
+	$(document).ready(function(){
+		$(".owl-carousel").owlCarousel();
+	});
+</script>
 {% endblock domready %}
