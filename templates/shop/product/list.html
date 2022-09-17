@@ -218,7 +218,14 @@
 				<div class="card top-product-card">
 					<div class="card-body"><span class="badge badge-success">فروش</span><a class="wishlist-btn" href="#"><i class="lni lni-heart"></i></a><a class="product-thumbnail d-block" href="{{ product.get_absolute_url }}"><img class="mb-2" src="{{ product.image.url }}" alt=""></a><a class="product-title d-block" href="{{ product.get_absolute_url }}">{{ product.name }}</a>
 					<p class="sale-price">{{ product.price|floatformat }} تومان</p>
-					<div class="product-rating"><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i></div><a class="btn btn-success btn-sm add2cart-notify" href="#"><i class="lni lni-plus"></i></a>
+					<div class="product-rating"><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i></div><a class="btn btn-success btn-sm add2cart-notify" onclick="document.getElementById('{{ product.id }}').submit()" href="#"><i class="lni lni-plus"></i></a>
+					
+					<!-- Add to cart -->
+					<form id="{{ product.id }}" class="cart-form" action="{% url 'cart:cart_add' product.id %}" method="post">
+						{{ cart_product_form.quantity.as_hidden }}
+						{{ cart_product_form.override }}
+						{% csrf_token %}
+					</form>
 					</div>
 				</div>
 			</div>
@@ -232,7 +239,13 @@
 					<div class="product-thumbnail-side"><span class="badge badge-success">فروش</span><a class="wishlist-btn" href="#"><i class="lni lni-heart"></i></a><a class="product-thumbnail d-block" href="{{ product.get_absolute_url }}"><img src="{{ product.image.url }}" alt=""></a></div>
 					<div class="product-description"><a class="product-title d-block" href="{{ product.get_absolute_url }}">{{ product.name }}</a>
 					<p class="sale-price"><i class="lni lni-dollar"></i>{{ product.price|floatformat }} تومان</p>
-					<div class="product-rating"><i class="lni lni-star-filled"></i>4.88 (39)</div><a class="btn btn-success btn-sm add2cart-notify" href="#"><i class="mr-1 lni lni-cart"></i>خرید</a>
+					<div class="product-rating"><i class="lni lni-star-filled"></i>4.88 (39)</div><a class="btn btn-success btn-sm add2cart-notify" onclick="document.getElementById('{{ product.id }}').submit()" href="#"><i class="mr-1 lni lni-cart"></i>خرید</a>
+					<!-- Add to cart -->
+					<form id="{{ product.id }}" class="cart-form" action="{% url 'cart:cart_add' product.id %}" method="post">
+						{{ cart_product_form.quantity.as_hidden }}
+						{{ cart_product_form.override }}
+						{% csrf_token %}
+					</form>
 					</div>
 				</div>
 				</div>
@@ -247,5 +260,5 @@
 
 
 {% block domready %}
-	
+
 {% endblock domready %}

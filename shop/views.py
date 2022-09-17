@@ -2,6 +2,7 @@ from django.shortcuts import (
 	render,
 	get_object_or_404,
 )
+from cart.forms import CartAddProductForm
 from .models import (
 	Category,
 	Product,
@@ -25,6 +26,9 @@ def product_list(request, category_slug=None):
 		grid = False
 	else:
 		grid = True
+
+	cart_product_form = CartAddProductForm(auto_id=False, 
+										   initial={"override": True,})
 	
 	return render(
 		request=request,
@@ -34,6 +38,7 @@ def product_list(request, category_slug=None):
 			'categories': categories,
 			'products': products,
 			'grid': grid,
+			'cart_product_form': cart_product_form,
 		}
 	)
 
@@ -45,10 +50,13 @@ def product_detail(request, id, slug):
 		available=True,
 	)
 
+	cart_product_form = CartAddProductForm()
+
 	return render(
 		request=request,
 		template_name='shop/product/detail.html',
 		context={
 			'product': product,
+			'cart_product_form': cart_product_form,
 		}
 	)

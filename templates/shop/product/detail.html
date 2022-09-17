@@ -12,7 +12,7 @@
 <div class="suha-sidenav-wrapper" id="sidenavWrapper">
 	<!-- Sidenav Profile-->
 	<div class="sidenav-profile">
-		<div class="user-profile"><img src="{% static 'img/bg-img/9.jpg' %}" alt=""></div>
+		<div class="user-profile"><img src="{% static 'front/img/bg-img/9.jpg' %}" alt=""></div>
 		<div class="user-info">
 		<h6 class="user-name mb-0">نیلوفر</h6>
 		<p class="available-balance">حساب شما <span><span class="counter">350000</span></span><span> تومان</span></p>
@@ -148,16 +148,20 @@
 	</div>
 	<!-- Add To Cart-->
 	<div class="cart-form-wrapper bg-white mb-3 py-3">
-	<div class="container">
-		<form class="cart-form" action="#" method="">
-		<div class="order-plus-minus d-flex align-items-center">
-			<div class="quantity-button-handler">-</div>
-			<input class="form-control cart-quantity-input" type="text" step="1" name="quantity" value="3">
-			<div class="quantity-button-handler">+</div>
+		<div class="container">
+			<!-- Add To Cart-->
+			<form class="cart-form" action="{% url 'cart:cart_add' product.id %}" method="post">
+				<div class="order-plus-minus d-flex align-items-center">
+					<div class="quantity-button-handler">-</div>
+					{{ cart_product_form.quantity }}
+					{{ cart_product_form.override }}
+					<div class="quantity-button-handler">+</div>
+				</div>
+				{% csrf_token %}
+				<button class="btn btn-danger ml-3" type="submit">افزودن به سبد خرید</button>
+			</form>
 		</div>
-		<button class="btn btn-danger ml-3" type="submit">افزودن به سبد خرید</button>
-		</form>
-	</div>
+		
 	</div>
 	<!-- Product Specification-->
 	<div class="p-specification bg-white mb-3 py-3">

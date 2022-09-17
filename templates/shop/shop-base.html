@@ -22,6 +22,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'front/img/icons/icon-180x180.png' %}">
     <!-- Stylesheet-->
     <link rel="stylesheet" href="{% static 'front/style.css' %}">
+    <link rel="stylesheet" href="{% static 'front/custom.css' %}">
     <!-- Web App Manifest-->
     <link rel="manifest" href="{% static 'front/manifest.json' %}">
 </head>
@@ -37,7 +38,10 @@
     <div class="header-area" id="headerArea">
 		<div class="container h-100 d-flex align-items-center justify-content-between">
 		  <!-- Back Button-->
+		  
+		  {% block back-button %}
 		  <div class="back-button"><a href="#"><i class="lni lni-arrow-right"></i></a></div>
+		  {% endblock back-button %}
 		  <!-- Page Title-->
 		  <div class="page-heading">
 			<h6 class="mb-0">{% block header-title %}لیست فروشگاه{% endblock header-title %}</h6>
@@ -69,7 +73,7 @@
           <ul class="h-100 d-flex align-items-center justify-content-between pl-0">
             <li class="active"><a href="#"><i class="lni lni-home"></i>خانه</a></li>
             <li><a href="#"><i class="lni lni-life-ring"></i>پشتیبانی</a></li>
-            <li><a href="#"><i class="lni lni-shopping-basket"></i>سبد خرید</a></li>
+            <li><a href="{% url 'cart:cart_detail' %}"><i class="lni lni-shopping-basket"></i>سبد خرید</a></li>
             <li><a href="#"><i class="lni lni-heart"></i>صفحات</a></li>
             <li><a href="#"><i class="lni lni-cog"></i>تنظیمات</a></li>
           </ul>
