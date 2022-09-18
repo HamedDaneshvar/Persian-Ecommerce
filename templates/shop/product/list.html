@@ -16,7 +16,7 @@
 <div class="filter-option" id="suhaNavbarToggler"><i class="lni lni-cog"></i></div>
 {% endblock header-option %}
 
-{% block content %}
+{% block sidebar %}
 <!-- Side Nav Wrapper-->
 <div class="suha-sidenav-wrapper filter-nav" id="sidenavWrapper">
 	<!-- Catagory Sidebar Area-->
@@ -177,7 +177,11 @@
 	</div>
 	<!-- Go Back Button-->
 	<div class="go-home-btn" id="goHomeBtn"><i class="lni lni-arrow-right"></i></div>
-</div>
+</div>	
+{% endblock sidebar %}
+
+
+{% block content %}
 <div class="page-content-wrapper">
 <!-- Top Products-->
 <div class="top-products-area py-3">

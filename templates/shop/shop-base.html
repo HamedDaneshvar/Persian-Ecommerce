@@ -34,6 +34,8 @@
 		  <div class="sr-only">بارگذاری...</div>
 		</div>
 	</div>
+	
+	{% block header %}
 	<!-- Header Area-->
     <div class="header-area" id="headerArea">
 		<div class="container h-100 d-flex align-items-center justify-content-between">
@@ -54,9 +56,51 @@
 
 		</div>
 	</div>
+	{% endblock header %}
+		
 
+	
+	
+	{% block sidebar %}
 	<!-- Sidenav Black Overlay-->
     <div class="sidenav-black-overlay"></div>
+	<!-- Side Nav Wrapper-->
+	<div class="suha-sidenav-wrapper" id="sidenavWrapper">
+		<!-- Sidenav Profile-->
+		<div class="sidenav-profile">
+			<div class="user-profile"><img src="{% static 'front/img/bg-img/9.jpg' %}" alt=""></div>
+			<div class="user-info">
+			<h6 class="user-name mb-0">نیلوفر</h6>
+			<p class="available-balance">حساب شما <span><span class="counter">350000</span></span><span> تومان</span></p>
+			</div>
+		</div>
+		<!-- Sidenav Nav-->
+		<ul class="sidenav-nav pl-0">
+			<li><a href="#"><i class="lni lni-user"></i>پروفایل من</a></li>
+			<li><a href="#"><i class="lni lni-alarm lni-tada-effect"></i>اطلاعیه ها <span class="ml-3 badge badge-warning">3</span></a></li>
+			<li class="suha-dropdown-menu"><a href="#"><i class="lni lni-cart"></i>صفحات خرید</a>
+			<ul>
+				<li><a href="#">- فروشگاه شبکه</a></li>
+				<li><a href="#">- لیست فروشگاه</a></li>
+				<li><a href="#">- مشخصات محصول</a></li>
+				<li><a href="#">- محصولات برجسته</a></li>
+				<li><a href="#">- فروش فلش</a></li>
+			</ul>
+			</li>
+			<li><a href="#"><i class="lni lni-empty-file"></i>تمام صفحات</a></li>
+			<li class="suha-dropdown-menu"><a href="#"><i class="lni lni-heart"></i>علاقه مندی های من</a>
+			<ul>
+				<li><a href="#">- شبکه مورد علاقه</a></li>
+				<li><a href="#">- لیست دلخواه</a></li>
+			</ul>
+			</li>
+			<li><a href="#"><i class="lni lni-cog"></i>تنظیمات</a></li>
+			<li><a href="#"><i class="lni lni-power-switch"></i>خروج از سیستم</a></li>
+		</ul>
+		<!-- Go Back Button-->
+		<div class="go-home-btn" id="goHomeBtn"><i class="lni lni-arrow-right"></i></div>
+	</div>
+	{% endblock sidebar %}
 
 
 	{% block content %}
@@ -68,6 +112,7 @@
     <div class="internet-connection-status" id="internetStatus"></div>
     <!-- Footer Nav-->
 	
+	{% block footer %}
     <div class="footer-nav-area" id="footerNav">
       <div class="container h-100 px-0">
         <div class="suha-footer-nav h-100">
@@ -87,6 +132,8 @@
         </div>
       </div>
     </div>
+	{% endblock footer %}
+		
 	
 
 	<!-- All JavaScript Files-->
