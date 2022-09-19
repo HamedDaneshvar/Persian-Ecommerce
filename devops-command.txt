@@ -1,0 +1,11 @@
+// pull RabbitMQ docker image
+$ docker pull rabbitmq:3.9.22-management-alpine
+
+// run RabbitMQ with docker
+$ docker run -d --hostname my-rabbit --name ecommerce-rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.9.22-management-alpine
+
+// run celery worker in your project directory
+$ celery --app config worker -l info
+
+// run celery with flower to monitor it in your project directory
+$ celery --app config flower
