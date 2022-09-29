@@ -9,6 +9,10 @@
 {% endblock title %}
 
 
+{% block back-button %}
+<div class="back-button"><a href="{% url 'shop:product_list' %}"><i class="lni lni-arrow-right"></i></a></div>
+{% endblock back-button %}
+
 
 {% block content %}
 <div class="page-content-wrapper">
