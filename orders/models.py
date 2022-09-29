@@ -8,6 +8,7 @@ from django.utils.translation import gettext as _
 from utils.general_model import GeneralModel
 from shop.models import Product
 from coupons.models import Coupon
+from transportation.models import Transport
 
 class Order(GeneralModel):
 	coupon = models.ForeignKey(Coupon,
@@ -15,6 +16,10 @@ class Order(GeneralModel):
 							   related_name="orders",
 							   null=True,
 							   blank=True,)
+	transport = models.ForeignKey(Transport,
+								  on_delete=models.SET_NULL,
+								  related_name="orders_transport",
+								  null=True,)
 	full_name = models.CharField(max_length=128,
 								 verbose_name=_("Full name"))
 	email = models.EmailField(verbose_name=_("E-mail"))
@@ -38,7 +43,7 @@ class Order(GeneralModel):
 		return f"Order {self.id}"
 
 	def get_total_cost_before_discount(self):
-		return sum(item.get_cost() for item in self.item.all())
+		return sum(item.get_cost() for item in self.items.all())
 
 	def get_discount(self):
 		total_cost = self.get_total_cost_before_discount()
@@ -47,8 +52,16 @@ class Order(GeneralModel):
 		return Decimal(0)
 
 	def get_total_cost(self):
-		total_cost = self.get_total_cost_before_discount()
+		transport_price = Decimal(0)
+		if self.transport:
+			transport_price = self.transport.price
+		total_cost = self.get_total_cost_before_discount() + transport_price
 		return total_cost - self.get_discount()
+	get_total_cost.short_description = _("Total cost")
+
+	def transport_name(self):
+		return self.transport.name
+	transport_name.short_description = "Transport Type"
 
 
 class OrderItem(GeneralModel):
