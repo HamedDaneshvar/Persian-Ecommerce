@@ -5,11 +5,16 @@ from django.shortcuts import (
 from cart.cart import Cart
 from transportation.models import Transport
 from transportation.forms import TransportChoiceForm
+from django.contrib.auth import get_user_model
 from .models import OrderItem
 from .forms import OrderCreateForm
 from .tasks import order_created
 
+User = get_user_model()
+
 def order_create(request):
+	user = User.objects.get(id=request.user.id)
+	
 	cart = Cart(request)
 
 	if request.method == "POST":
@@ -45,7 +50,7 @@ def order_create(request):
 					  "orders/order/checkout.html",
 					  {"order_form": order_form,})
 	else:
-		order_form = OrderCreateForm(auto_id=False, prefix="order_form")
+		order_form = OrderCreateForm(auto_id=False, instance=user, prefix="order_form")
 		transportation_form = TransportChoiceForm(prefix="transportation_form")
 
 		transports = Transport.objects.filter(activate=True)
