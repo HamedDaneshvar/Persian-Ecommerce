@@ -1,0 +1,88 @@
+{% extends 'shop/shop-base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block title %}
+پروفایل
+{% endblock title %}
+
+
+{% block header %}
+<!-- Header Area-->
+<div class="header-area" id="headerArea">
+	<div class="container h-100 d-flex align-items-center justify-content-between">
+	  <!-- Logo Wrapper-->
+	  <div class="logo-wrapper"><a href="home.html"><img src="{% static 'front/img/core-img/logo-small.png' %}" alt=""></a></div>
+	  <!-- Search Form-->
+	  <div class="top-search-form">
+		<form action="#" method="">
+		  <input class="form-control" type="search" placeholder="کلمه کلیدی خود را وارد کنید">
+		  <button type="submit"><i class="fa fa-search"></i></button>
+		</form>
+	  </div>
+	  {% block header-option %}
+	  <!-- Navbar Toggler-->
+	  <div class="suha-navbar-toggler d-flex justify-content-between flex-wrap" id="suhaNavbarToggler"><span></span><span></span><span></span></div>
+	  {% endblock header-option %}
+	</div>
+</div>
+{% endblock header %}
+
+
+{% block content %}
+<div class="page-content-wrapper">
+	<div class="container">
+	  <!-- Profile Wrapper-->
+	  <div class="profile-wrapper-area py-3">
+		<!-- User Information-->
+		<div class="card user-info-card">
+		  <div class="card-body p-4 d-flex align-items-center">
+			<div class="user-profile mr-3">
+				{% if user.avatar %}
+				<img src="{{ user.avatar.url }}" alt="">
+				{% else %}
+				<img src="{% static 'front/img/user-profile.png' %}" alt="">
+				{% endif %}
+			</div>
+			<div class="user-info">
+			  {% comment %} <p class="mb-0 text-white">design-world @</p> {% endcomment %}
+			  <h5 class="mb-0">{% if request.user.nick_name %}{{ request.user.nick_name }}{% else %} - {% endif %}</h5>
+			</div>
+		  </div>
+		</div>
+		<!-- User Meta Data-->
+		<div class="card user-data-card">
+		  <div class="card-body">
+			<div class="single-profile-data d-flex align-items-center justify-content-between">
+			  <div class="title d-flex align-items-center"><i class="lni lni-user"></i><span>نام نمایشی</span></div>
+			  <div class="data-content">{% if request.user.nick_name %}{{ request.user.nick_name }}{% else %} - {% endif %}</div>
+			</div>
+			<div class="single-profile-data d-flex align-items-center justify-content-between">
+			  <div class="title d-flex align-items-center"><i class="lni lni-user"></i><span>نام و نام خانوادگی</span></div>
+			  <div class="data-content">{% if request.user.full_name %}{{ request.user.full_name }}{% else %} - {% endif %}</div>
+			</div>
+			<div class="single-profile-data d-flex align-items-center justify-content-between">
+			  <div class="title d-flex align-items-center"><i class="lni lni-phone"></i><span>تلفن</span></div>
+			  <div class="data-content">{% if request.user.phone %}{{ request.user.phone }}{% else %} - {% endif %}</div>
+			</div>
+			<div class="single-profile-data d-flex align-items-center justify-content-between">
+			  <div class="title d-flex align-items-center"><i class="lni lni-envelope"></i><span>آدرس ایمیل</span></div>
+			  <div class="data-content">{% if request.user.email %}{{ request.user.email }}{% else %} - {% endif %}</div>
+			</div>
+			<div class="single-profile-data d-flex align-items-center justify-content-between">
+			  <div class="title d-flex align-items-center"><i class="lni lni-map-marker"></i><span>آدرس:</span></div>
+			  <div class="data-content">{% if request.user.address %}{{ request.user.address }}{% else %} - {% endif %}</div>
+			</div>
+			<div class="single-profile-data d-flex align-items-center justify-content-between">
+			  <div class="title d-flex align-items-center"><i class="lni lni-star"></i><span>سفارش من</span></div>
+			  <div class="data-content"><a class="btn btn-danger btn-sm" href="my-order.html">نمایش</a></div>
+			</div>
+		  </div>
+		</div>
+		<!-- Edit Profile-->
+		<div class="edit-profile-btn mt-3"><a class="btn btn-info w-100" href="{% url 'accounts:edit_profile' %}"><i class="lni lni-pencil mr-2"></i>ویرایش نمایه</a></div>
+	  </div>
+	</div>
+</div>
+{% endblock content %}

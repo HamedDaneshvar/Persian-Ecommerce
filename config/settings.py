@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 	'widget_tweaks',
 
 	# local app
+	'accounts.apps.AccountsConfig',
 	'shop.apps.ShopConfig',
 	'cart.apps.CartConfig',
 	'orders.apps.OrdersConfig',
@@ -150,3 +151,8 @@ CART_SESSION_ID = 'cart'
 # email config
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = "Info@localhost"
+
+# User Config
+AUTH_USER_MODEL = 'accounts.CustomUser'
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"

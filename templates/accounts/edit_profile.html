@@ -1,0 +1,87 @@
+{% extends 'shop/shop-base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+
+{% block title %}
+ویرایش نمایه
+{% endblock title %}
+
+
+{% block header %}
+<!-- Header Area-->
+<div class="header-area" id="headerArea">
+	<div class="container h-100 d-flex align-items-center justify-content-between">
+	  <!-- Back Button-->
+	  <div class="back-button"><a href="{% url 'accounts:profile' %}"><i class="lni lni-arrow-right"></i></a></div>
+	  <!-- Page Title-->
+	  <div class="page-heading">
+		<h6 class="mb-0">ویرایش نمایه</h6>
+	  </div>
+	  {% block header-option %}
+	  <!-- Navbar Toggler-->
+	  <div class="suha-navbar-toggler d-flex justify-content-between flex-wrap" id="suhaNavbarToggler"><span></span><span></span><span></span></div>
+	  {% endblock header-option %}
+	</div>
+  </div>
+{% endblock header %}
+
+
+{% block content %}
+<div class="page-content-wrapper">
+	<div class="container">
+	  <!-- Profile Wrapper-->
+	  <div class="profile-wrapper-area py-3">
+		<form method="post" enctype="multipart/form-data">
+			<!-- User Information-->
+			<div class="card user-info-card">
+			<div class="card-body p-4 d-flex align-items-center">
+				<div class="user-profile mr-3">
+					{% if user.avatar %}
+					<img src="{{ user.avatar.url }}" alt="">
+					{% else %}
+					<img src="{% static 'front/img/user-profile.png' %}" alt="">
+					{% endif %}
+				<div class="change-user-thumb">
+					{% render_field profile_form.avatar class+="form-control-file" %}
+					<button><i class="lni lni-pencil"></i></button>
+				</div>
+				</div>
+				<div class="user-info">
+				{% comment %} <p class="mb-0 text-white">design-world @</p> {% endcomment %}
+				<h5 class="mb-0">{% if request.user.nick_name %}{{ request.user.nick_name }}{% else %} - {% endif %}</h5>
+				</div>
+			</div>
+			</div>
+			<!-- User Meta Data-->
+			<div class="card user-data-card">
+			<div class="card-body">
+				<div class="mb-3">
+					<div class="title mb-2"><i class="lni lni-user"></i><span>نام نمایشی</span></div>
+					{% render_field profile_form.nick_name class+="form-control" placeholder="ندا" %}
+				</div>
+				<div class="mb-3">
+					<div class="title mb-2"><i class="lni lni-user"></i><span>نام و نام خانوادگی</span></div>
+					{% render_field profile_form.full_name class+="form-control" placeholder="ندا رضوانی" %}
+				</div>
+				<div class="mb-3">
+					<div class="title mb-2"><i class="lni lni-phone"></i><span>تلفن</span></div>
+					{% render_field profile_form.phone class+="form-control" placeholder="09123456789" %}
+				</div>
+				<div class="mb-3">
+					<div class="title mb-2"><i class="lni lni-envelope"></i><span>آدرس ایمیل</span></div>
+					{% render_field profile_form.email class+="form-control" placeholder="care@example.com" %}
+				</div>
+				<div class="mb-3">
+					<div class="title mb-2"><i class="lni lni-map-marker"></i><span>آدرس حمل و نقل</span></div>
+					{% render_field profile_form.address class+="form-control" placeholder="تهران - ونک" %}
+				</div>
+				{% csrf_token %}
+				<button class="btn btn-success w-100" type="submit">ذخیره همه تغییرات</button>
+			</div>
+			</div>
+		</form>
+	  </div>
+	</div>
+</div>
+{% endblock content %}
