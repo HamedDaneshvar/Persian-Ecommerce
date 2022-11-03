@@ -1,25 +1,49 @@
-# E-Commerce CMS
-This is an E-Commerce CMS created with Django
+# فروشگاه اینترنتی فارسی
 
-### Use the following commands to run the project
+
+## نحوه پیکربندی و استفاده از پروژه
+
+در مرحله اول نیاز به ساخت یک محیط مجازی(virtual env) جهت اجرا پروژه  دارید که می‌توانید با توجه سیستم عامل خود به صورت زیر عمل کنید:
+
+به مسیر پروژه رفته و ترمینال یا cmd را در آن اجرا کنید و دستور زیر را وارد کنید:
 
 ```sh
-python -m virtualenv venv
+python -m venv venv
 ```
 
-and activate your virtual environments
+حالا باید محیط مجازی که ساختید را فعال کنید
 
-```
-source venv/Scripts/activate
+در **Linux/MacOs**
+
+```sh
+source venv/bin/activate
 ```
 
-then install requirments for project with pip
+در **Windows**
+
+```sh
+venv/Scripts/activate
+```
+
+در مرحله بعد باید وابستگی‌های(dependency) پروژه را نصب کنید
 
 ```sh
 pip install -r requirments.txt
 ```
 
-run the project and enjoy it:)
+## نحوه اجرای پروژه
+برای اجرای پروژه می‌توانید از طریق زیر عمل کنید
+
+فایلی به نام *env.* ساخته و مقادیری مانند فایل *env-sample.* در قرار بدهید.
+
+در مرحله بعد دستور زیر را جهت ساخت دیتابیس و جداول آن انجام دهید
+
+```sh
+python manage.py migrate
+```
+
+در نهایت دستور زیر را وارد کنید تا پروژه ران شود و از طریق این [Link](http://127.0.0.1:8000) به آن مراجعه کنید
+
 
 ```sh
 python manage.py runserver
