@@ -1,0 +1,27 @@
+{% extends 'shop/shop-base.html' %}
+
+{% block title %}
+{% block header-title %}
+پرداخت نامشخص
+{% endblock header-title %}
+{% endblock title %}
+
+
+{% block header %}
+{% endblock header %}
+  
+
+{% block content %}
+<!-- Order/Payment Unsuccess-->
+<div class="order-success-wrapper">
+  <div class="content"><i class="lni lnr-cross-circle"></i>
+    <h5>تراکنش نامشخص</h5>
+    <p>تراکنش نامشخص است و خطایی وجود دارد. جهت استعلام موفق یا ناموفق بودن تراکنش از طریق پنل کاربری خود اقدام نمایید. خطای بوجود آمده به شرح زیر است.</p>
+	<p>{{ error_code }}: {{ error_message }}</p>
+  </div>
+</div>
+{% endblock content %}
+
+
+{% block footer %}
+{% endblock footer %}

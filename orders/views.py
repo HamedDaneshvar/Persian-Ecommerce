@@ -1,5 +1,6 @@
 from django.shortcuts import (
 	render,
+	redirect,
 	get_object_or_404,
 )
 from cart.cart import Cart
@@ -41,10 +42,15 @@ def order_create(request):
 			
 			# launch Asynchronous task
 			# order_created.delay(order.id)
+
+			request.session['amount'] = order.get_total_cost()
+			request.session['order_id'] = order.id
+			return redirect('payments:request')
+
 			
-			return render(request,
-						  "orders/order/payment-success.html",
-						  {"order": order})
+			# return render(request,
+			# 			  "orders/order/payment-success.html",
+			# 			  {"order": order})
 		else:
 			return render(request,
 					  "orders/order/checkout.html",

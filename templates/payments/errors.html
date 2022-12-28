@@ -1,0 +1,27 @@
+{% extends 'shop/shop-base.html' %}
+
+{% block title %}
+{% block header-title %}
+
+{% endblock header-title %}
+{% endblock title %}
+
+
+{% block header %}
+{% endblock header %}
+  
+
+{% block content %}
+<!-- payments error-->
+<div class="order-success-wrapper">
+  <div class="content"><i class="lni lnr-construction"></i>
+    <h5>خطا</h5>
+    <p>در انجام تراکنش خطایی به وجود آمد! خطا به شرح زیر است:</p>
+	  <p>{{ error_code }}: {{ error_message }}</p>
+  </div>
+</div>
+{% endblock content %}
+
+
+{% block footer %}
+{% endblock footer %}

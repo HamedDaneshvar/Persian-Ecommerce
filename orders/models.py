@@ -32,6 +32,8 @@ class Order(GeneralModel):
 	discount = models.IntegerField(default=0,
 					validators=[MinValueValidator(0),
 								MaxValueValidator(100),])
+	transaction_id = models.IntegerField(verbose_name=_("Transaction ID"), 
+										 null=True)
 
 	class Meta:
 		ordering = ["-create_at"]

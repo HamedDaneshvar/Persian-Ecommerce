@@ -1,0 +1,32 @@
+{% extends 'shop/shop-base.html' %}
+
+{% block title %}
+{% block header-title %}
+پرداخت موفق
+{% endblock header-title %}
+{% endblock title %}
+
+
+{% block header %}
+{% endblock header %}
+  
+
+{% block content %}
+<!-- Order/Payment Success-->
+<div class="order-success-wrapper">
+  <div class="content"><i class="lni lni-checkmark-circle"></i>
+    
+    {% if code == 100 %}
+    <h5>پرداخت انجام شد</h5>
+    <p>ما همه جزئیات سفارش شما را به شماره <strong style="text-decoration: underline;">{{ order.id }}</strong> از طریق ایمیل به شما اطلاع خواهیم داد. متشکرم!</p><a class="btn btn-warning mt-3" href="/">دوباره بخرید</a>
+    {% elif code == 101 %}
+    <h5>پرداخت انجام شده است</h5>
+    <p>ما همه جزئیات سفارش شما را به شماره <strong style="text-decoration: underline;">{{ order.id }}</strong> از طریق ایمیل به اطلاع شما رسانده‌ایم. متشکرم!</p><a class="btn btn-warning mt-3" href="/">دوباره بخرید</a>
+    {% endif %}
+  </div>
+</div>
+{% endblock content %}
+
+
+{% block footer %}
+{% endblock footer %}
