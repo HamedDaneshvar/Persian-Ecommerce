@@ -7,8 +7,6 @@ from django.contrib.auth import (
 	authenticate,
 )
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
-
 from accounts.models import CustomUser
 from .forms import (
 	CustomUserCreationForm,
@@ -44,12 +42,15 @@ def profile(request):
 def edit_profile(request):
 	user = CustomUser.objects.get(id=request.user.id)
 	if request.method == "POST":
-		profile_form = ProfileForm(request.POST, request.FILES, instance=user)
-		profile_form.save()
-		return redirect("accounts:profile")
+		form = ProfileForm(request.POST, request.FILES, instance=user)
+		if form.is_valid():
+			if "email" in form.changed_data:
+				form.username = form.cleaned_data.get("email")
+			form.save()
+			return redirect("accounts:profile")
 	else:
-		profile_form = ProfileForm(instance=user)
+		form = ProfileForm(instance=user)
 
 	return render(request,
 				  "accounts/edit_profile.html",
-				  {"profile_form": profile_form,})
+				  {"form": form,})
