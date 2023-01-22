@@ -20,9 +20,11 @@ def signup(request):
 		form = CustomUserCreationForm(request.POST)
 		if form.is_valid():
 			email = form.cleaned_data.get("email")
+			full_name = form.cleaned_data.get("full_name")
 			raw_password = form.cleaned_data.get("password1")
 			form = form.save(commit=False)
 			form.username = email
+			form.nick_name = full_name
 			form.save()
 			user = authenticate(email=email, password=raw_password)
 			login(request, user)
