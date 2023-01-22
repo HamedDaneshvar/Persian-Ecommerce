@@ -7,3 +7,6 @@
     position: relative;
     top: -0.6rem;
 }
+ul.errorlist {
+    padding-right: 0px !important;
+}
