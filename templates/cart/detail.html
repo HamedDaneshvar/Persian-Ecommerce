@@ -18,6 +18,7 @@
 <div class="page-content-wrapper">
 	<div class="container">
 	<!-- Cart Wrapper-->
+	{% if cart %}
 	<div class="cart-wrapper-area py-3">
 		<div class="cart-table card mb-3">
 		<div class="table-responsive card-body">
@@ -99,6 +100,39 @@
 		</div>
 		</div>
 	</div>
+	{% else %}
+	<div class="cart-empty">
+		<div class="row">
+			<div class="col-12">
+				<div class="empty">
+					<span class="pic">
+						<img src="{% static 'front/img/cart/empty-cart.png' %}" alt="">
+					</span>
+					<h3>
+						سبد خرید شما خالی است
+					</h3>
+					<ul class="menu">
+						<li class="item">
+							<a href="/">
+								صفحه اصلی
+							</a>
+						</li>
+						<li class="item">
+							<a href="#">
+								حساب کاربری
+							</a>
+						</li>
+						<li class="item">
+							<a href="/">
+								فروشگاه
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% endif %}
 	</div>
 </div>
 {% endblock content %}
