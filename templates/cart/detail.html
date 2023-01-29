@@ -61,7 +61,23 @@
 		<!-- Coupon Area-->
 		<div class="card coupon-card mb-3">
 		<div class="card-body">
+			
 			<div class="apply-coupon">
+				{% if not cart.coupon_id and request.session.coupon_code %}
+				<div class="alert alert-warning" role="alert">
+					<button type="button" class="close mr-2" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<p class="d-inline">کد تخفیف "{{ request.session.coupon_code }}" وجود ندارد!</p>
+				</div>
+				{% elif cart.coupon_id and request.session.coupon_code %}
+				<div class="alert alert-success" role="alert">
+					<button type="button" class="close mr-2" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<p class="d-inline">کد تخفیف "{{ request.session.coupon_code }}" با موفقیت وارد شد!</p>
+				</div>
+				{% endif %}
 			<h6 class="mb-0">تخفیف دارید؟</h6>
 			<p class="mb-2">کد تخفیف خود را اینجا وارد کنید و از تخفیف های عالی استفاده کنید!</p>
 			<!-- for cart with coupon to remove coupon-->
