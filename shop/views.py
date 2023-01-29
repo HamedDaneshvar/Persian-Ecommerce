@@ -11,8 +11,13 @@ from .models import (
 def product_list(request, category_slug=None):
 	category = None
 	grid = False
+	product_exist = True
+	products_description = ""
 	categories = Category.objects.all()
 	products = Product.objects.filter(available=True,)
+	if len(products) == 0:
+		product_exist = False
+		products_description = "این فروشگاه محصولی را ثبت نکرده است."
 
 	if category_slug:
 		category = get_object_or_404(
@@ -20,9 +25,12 @@ def product_list(request, category_slug=None):
 			slug=category_slug,
 		)
 		products = products.filter(category=category)
+		if len(products) == 0:
+			product_exist = False
+			products_description = "برای این دسته‌بندی محصولی ثبت نشده است."
 
 	# show in grid or list type
-	if request.GET.get('stype', None) == 'list':
+	if request.GET.get('style', None) == 'list':
 		grid = False
 	else:
 		grid = True
@@ -37,6 +45,8 @@ def product_list(request, category_slug=None):
 			'category': category,
 			'categories': categories,
 			'products': products,
+			'product_exist': product_exist,
+			'products_description': products_description,
 			'grid': grid,
 			'cart_product_form': cart_product_form,
 		}
