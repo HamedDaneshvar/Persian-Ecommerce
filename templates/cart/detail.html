@@ -50,6 +50,7 @@
 									</form>
 								</div>
 							</td>
+							<td><span class="font-weight-bold text-body h5">{{ item.total_price|floatformat }} تومان</span></td>
 						</tr>
 					{% endwith %}
 				{% endfor %}		
@@ -95,7 +96,7 @@
 			</div>
 			<a class="btn btn-warning" href="{% url 'orders:order_create' %}">پرداخت </a>
 			{% else %}
-				<h5 class="total-price mb-0"><span class="counter">{{ cart.get_total_price|floatformat }}</span> تومان</h5><a class="btn btn-warning" href="{% url 'orders:order_create' %}">پرداخت </a>
+				<h5 class="total-price mb-0 h4 font-weight-bold"><span class="counter">{{ cart.get_total_price|floatformat }}</span> تومان</h5><a class="btn btn-warning" href="{% url 'orders:order_create' %}">پرداخت </a>
 			{% endif %}
 		</div>
 		</div>
