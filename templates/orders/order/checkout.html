@@ -53,6 +53,7 @@
         {% comment %} </form> {% endcomment %}
       </div>
       <!-- Shipping Method Choose-->
+      {% if transports %}
       <div class="shipping-method-choose mb-3">
         <div class="card shipping-method-choose-title-card bg-success">
           <div class="card-body">
@@ -77,6 +78,7 @@
           </div>
         </div>
       </div>
+      {% endif %}
     </form>
       <!-- Cart Amount Area-->
       <div class="card cart-amount-area">
