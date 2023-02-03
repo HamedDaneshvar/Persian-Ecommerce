@@ -117,12 +117,12 @@
           var transport_price = {{ transport.price|floatformat }};
           if ($(this).is(':checked')) {
             {% if cart.coupon %}
-            var total_price = (get_total_price + transport_price).toFixed(2);
-            var total_price_after_discount = (get_total_price_after_discount + transport_price).toFixed(2);
+            var total_price = (get_total_price + transport_price).toString();
+            var total_price_after_discount = (get_total_price_after_discount + transport_price).toString();
             $("h5 span.counter").text(total_price_after_discount);
             $("h6 span.counter").text(total_price);
             {% else %}
-            var total_price = (get_total_price + transport_price).toFixed(2);
+            var total_price = (get_total_price + transport_price).toString();
             $("h5 span.counter").text(total_price);
             {% endif %}
           }
