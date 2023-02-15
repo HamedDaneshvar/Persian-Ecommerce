@@ -68,7 +68,7 @@
                     {% for radio, transport in transportation_form.transport|multifor:transports %}
                       <li>
                         {{ radio.tag }}
-                        <label for="{{ radio.id_for_label }}">{{ transport.name }} <span>{{ transport.delivery }} با تحویل <span class="price">{{ transport.price|floatformat }}</span> تومان</span></label>
+                        <label for="{{ radio.id_for_label }}">{{ transport.name }} <span>{{ transport.delivery }} با تحویل <span class="price">{{ transport.price|floatformat:-2 }}</span> تومان</span></label>
                         <div class="check"></div>
                       </li>
                     {% endfor %}  
@@ -85,12 +85,12 @@
         <div class="card-body d-flex align-items-center justify-content-between">
           {% if cart.coupon %}
           <div class="d-flex justify-content-between align-items-center">
-            <h5 class="total-price mb-0 mr-3"><span class="counter">{{ cart.get_total_price_after_discount|floatformat }}</span>تومان</h5>
-            <h6 class="total-price mb-0 text-decoration-line-through text-danger"><span class="counter">{{ cart.get_total_price|floatformat }}</span>تومان </h6>
+            <h5 class="total-price mb-0 mr-3"><span class="counter">{{ cart.get_total_price_after_discount|floatformat:-2 }}</span>تومان</h5>
+            <h6 class="total-price mb-0 text-decoration-line-through text-danger"><span class="counter">{{ cart.get_total_price|floatformat:-2 }}</span>تومان </h6>
           </div>
           <a class="btn btn-warning" id="checkout-submit" href="#">تأیید و پرداخت کنید</a>
           {% else %}
-            <h5 class="total-price mb-0"><span class="counter">{{ cart.get_total_price|floatformat }}</span> تومان</h5><a class="btn btn-warning" id="checkout-submit" href="#">تأیید و پرداخت کنید</a>
+            <h5 class="total-price mb-0"><span class="counter">{{ cart.get_total_price|floatformat:-2 }}</span> تومان</h5><a class="btn btn-warning" id="checkout-submit" href="#">تأیید و پرداخت کنید</a>
           {% endif %}
         </div>
       </div>
@@ -109,12 +109,12 @@
   });
 
   $(document).ready(function () {
-    var get_total_price = {{ cart.get_total_price|floatformat }};
-    var get_total_price_after_discount = {{ cart.get_total_price_after_discount|floatformat }};
+    var get_total_price = {{ cart.get_total_price|floatformat:-2 }};
+    var get_total_price_after_discount = {{ cart.get_total_price_after_discount|floatformat:-2 }};
 
     {% for transport in transports %}
       $('#id_transportation_form-transport_{{ forloop.counter0 }}').click(function () {
-          var transport_price = {{ transport.price|floatformat }};
+          var transport_price = {{ transport.price|floatformat:-2 }};
           if ($(this).is(':checked')) {
             {% if cart.coupon %}
             var total_price = (get_total_price + transport_price).toString();

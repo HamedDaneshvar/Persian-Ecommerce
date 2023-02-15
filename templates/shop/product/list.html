@@ -225,7 +225,7 @@
 				<div class="col-6 col-md-4 col-lg-3">
 					<div class="card top-product-card">
 						<div class="card-body"><span class="badge badge-success">فروش</span><a class="wishlist-btn" href="#"><i class="lni lni-heart"></i></a><a class="product-thumbnail d-block" href="{{ product.get_absolute_url }}"><img class="mb-2" src="{% if product.image %} {{ product.image.url }} {% else %} {% static 'front/img/nopic.jpg' %} {% endif %}" alt=""></a><a class="product-title d-block" href="{{ product.get_absolute_url }}">{{ product.name }}</a>
-						<p class="sale-price">{{ product.price|floatformat }} تومان</p>
+						<p class="sale-price">{{ product.price|floatformat:-2 }} تومان</p>
 						<div class="product-rating"><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i></div><a class="btn btn-success btn-sm add2cart-notify" onclick="document.getElementById('{{ product.id }}').submit()" href="#"><i class="lni lni-plus"></i></a>
 						
 						<!-- Add to cart -->
@@ -246,7 +246,7 @@
 					<div class="card-body d-flex align-items-center">
 						<div class="product-thumbnail-side"><span class="badge badge-success">فروش</span><a class="wishlist-btn" href="#"><i class="lni lni-heart"></i></a><a class="product-thumbnail d-block" href="{{ product.get_absolute_url }}"><img src="{% if product.image %} {{ product.image.url }} {% else %} {% static 'front/img/nopic.jpg' %} {% endif %}" alt=""></a></div>
 						<div class="product-description"><a class="product-title d-block" href="{{ product.get_absolute_url }}">{{ product.name }}</a>
-						<p class="sale-price"><i class="lni lni-dollar"></i>{{ product.price|floatformat }} تومان</p>
+						<p class="sale-price"><i class="lni lni-dollar"></i>{{ product.price|floatformat:-2 }} تومان</p>
 						<div class="product-rating"><i class="lni lni-star-filled"></i>4.88 (39)</div><a class="btn btn-success btn-sm add2cart-notify" onclick="document.getElementById('{{ product.id }}').submit()" href="#"><i class="mr-1 lni lni-cart"></i>خرید</a>
 						<!-- Add to cart -->
 						<form id="{{ product.id }}" class="cart-form" action="{% url 'cart:cart_add' product.id %}" method="post">

@@ -20,7 +20,7 @@
 	<div class="container d-flex justify-content-between">
 		<div class="p-title-price">
 		<h6 class="mb-1">{{ prpduct.name }}</h6>
-		<p class="sale-price mb-0">{{ product.price|floatformat }} تومان</p>
+		<p class="sale-price mb-0">{{ product.price|floatformat:-2 }} تومان</p>
 		</div>
 		<div class="p-wishlist-share"><a href="#"><i class="lni lni-heart"></i></a></div>
 	</div>

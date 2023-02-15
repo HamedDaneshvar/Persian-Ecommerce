@@ -35,7 +35,7 @@
 								</form>
 							</th>
 							<td><img src="{{ product.image.url }}" alt=""></td>
-							<td><a href="{{ product.get_absolute_url }}"> {{product.name}}    <span>{{ item.price|floatformat }} تومان ×  {{ item.quantity }} </span> </a> </td>
+							<td><a href="{{ product.get_absolute_url }}"> {{product.name}}    <span>{{ item.price|floatformat:-2 }} تومان ×  {{ item.quantity }} </span> </a> </td>
 							<td>
 								<div class="quantity">
 									<form class="cart-form" action="{% url 'cart:cart_add' product.id %}" method="post">
@@ -50,7 +50,7 @@
 									</form>
 								</div>
 							</td>
-							<td><span class="font-weight-bold text-body h5">{{ item.total_price|floatformat }} تومان</span></td>
+							<td><span class="font-weight-bold text-body h5">{{ item.total_price|floatformat:-2 }} تومان</span></td>
 						</tr>
 					{% endwith %}
 				{% endfor %}		
@@ -107,12 +107,12 @@
 		<div class="card-body d-flex align-items-center justify-content-between">
 			{% if cart.coupon %}
 			<div class="d-flex justify-content-between align-items-center">
-				<h5 class="total-price mb-0 mr-3"><span class="counter">{{ cart.get_total_price_after_discount|floatformat }}</span>تومان</h5>
-				<h6 class="total-price mb-0 text-decoration-line-through text-danger"><span class="counter">{{ cart.get_total_price|floatformat }}</span>تومان </h6>
+				<h5 class="total-price mb-0 mr-3"><span class="counter">{{ cart.get_total_price_after_discount|floatformat:-2 }}</span>تومان</h5>
+				<h6 class="total-price mb-0 text-decoration-line-through text-danger"><span class="counter">{{ cart.get_total_price|floatformat:-2 }}</span>تومان </h6>
 			</div>
 			<a class="btn btn-warning" href="{% url 'orders:order_create' %}">پرداخت </a>
 			{% else %}
-				<h5 class="total-price mb-0 h4 font-weight-bold"><span class="counter">{{ cart.get_total_price|floatformat }}</span> تومان</h5><a class="btn btn-warning" href="{% url 'orders:order_create' %}">پرداخت </a>
+				<h5 class="total-price mb-0 h4 font-weight-bold"><span class="counter">{{ cart.get_total_price|floatformat:-2 }}</span> تومان</h5><a class="btn btn-warning" href="{% url 'orders:order_create' %}">پرداخت </a>
 			{% endif %}
 		</div>
 		</div>
