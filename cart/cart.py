@@ -46,6 +46,14 @@ class Cart():
 		if product_id in self.cart:
 			del self.cart[product_id]
 			self.save()
+		
+		if len(self) == 0:
+			try:
+				if self.session.get("coupon_id", None):
+					del self.session["coupon_id"]
+					del self.session["coupon_code"]
+			except:
+				pass
 
 	def __iter__(self):
 		"""
