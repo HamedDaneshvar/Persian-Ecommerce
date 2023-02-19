@@ -12,7 +12,7 @@ class OrderItemInline(admin.TabularInline):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
 	list_display = ["full_name", "email", "phone", "address", 
-					"transport_name", "get_total_cost", "paid",
+					"transport", "get_total_cost", "paid",
 					"create_at", "updated_at"]
 	list_filter = ["paid", "create_at", "updated_at",]
 	inlines = [OrderItemInline]

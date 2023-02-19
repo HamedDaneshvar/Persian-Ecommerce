@@ -10,11 +10,13 @@ from django.contrib.auth import get_user_model
 from .models import OrderItem
 from .forms import OrderCreateForm
 from .tasks import order_created
+from .mails import send_mail_order_created
 
 User = get_user_model()
 
 def order_create(request):
 	user = User.objects.get(id=request.user.id)
+	transports = Transport.objects.filter(activate=True)
 	
 	cart = Cart(request)
 
@@ -45,21 +47,21 @@ def order_create(request):
 
 			request.session['amount'] = order.get_total_cost()
 			request.session['order_id'] = order.id
-			return redirect('payments:request')
+			# return redirect('payments:request')
 
-			
-			# return render(request,
-			# 			  "orders/order/payment-success.html",
-			# 			  {"order": order})
+			send_mail_order_created(order.id)
+			return render(request,
+						  "orders/order/payment-success.html",
+						  {"order": order})
 		else:
 			return render(request,
 					  "orders/order/checkout.html",
-					  {"order_form": order_form,})
+					  {"order_form": order_form,
+					   "transportation_form": transportation_form,
+					   "transports": transports,})
 	else:
 		order_form = OrderCreateForm(auto_id=False, instance=user, prefix="order_form")
 		transportation_form = TransportChoiceForm(prefix="transportation_form")
-
-		transports = Transport.objects.filter(activate=True)
 
 		return render(request,
 					  "orders/order/checkout.html",

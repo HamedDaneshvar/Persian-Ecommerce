@@ -13,4 +13,4 @@ class Transport(GeneralModel):
 	activate = models.BooleanField(verbose_name=_("Activate"))
 
 	def __str__(self):
-		return f"{self.name} {self.delivery}"
+		return f"{self.name}: {self.delivery}"

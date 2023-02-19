@@ -58,12 +58,8 @@ class Order(GeneralModel):
 		if self.transport:
 			transport_price = self.transport.price
 		total_cost = self.get_total_cost_before_discount() + transport_price
-		return total_cost - self.get_discount()
+		return str(total_cost - self.get_discount())
 	get_total_cost.short_description = _("Total cost")
-
-	def transport_name(self):
-		return self.transport.name
-	transport_name.short_description = "Transport Type"
 
 
 class OrderItem(GeneralModel):
