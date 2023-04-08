@@ -1,3 +1,4 @@
+import re
 import json
 import requests
 from django.shortcuts import (
@@ -19,22 +20,38 @@ MERCHANT = 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX'
 ZP_API_REQUEST_URL = "https://sandbox.zarinpal.com/pg/v4/payment/request.json"
 ZP_API_VERIFY_URL = "https://sandbox.zarinpal.com/pg/v4/payment/verify.json"
 ZP_API_STARTPAY_URL = "https://sandbox.zarinpal.com/pg/StartPay/{authority}"
+CURRENCY = "IRT"
 email = 'email@example.com'  # Optional
 mobile = '09123456789'  # Optional
 
+# test data from banktest.ir
+MERCHANT = config("MERCHANT")
+ZP_API_REQUEST_URL = "https://sandbox.banktest.ir/zarinpal/api.zarinpal.com/pg/v4/payment/request.json"
+ZP_API_VERIFY_URL = "https://sandbox.banktest.ir/zarinpal/api.zarinpal.com/pg/v4/payment/verify.json"
+ZP_API_STARTPAY_URL = "https://sandbox.banktest.ir/zarinpal/www.zarinpal.com/pg/StartPay/{authority}"
 
 def send_request(request):
 	amount = request.session.get("amount")
-	currency = "IRT"
-	CallbackURL = request.build_absolute_uri(reverse('payments:verify'))
+	callbackURL = request.build_absolute_uri(reverse('payments:verify'))
 	description = f"پرداخت هزینه سفارشی به مبلغ {amount}"
+
+	# change type of amount if possiable to int
+	pattern = r'(\d+)\.0+'
+	amount_temp = re.match(pattern, amount)
+	if amount_temp:
+		amount = int(amount_temp.group(1))
+
+		# cause banktest or zarinpal bug to send amount as toman
+		amount *= 10
+
+		request.session['amount'] = amount
 
 	request_data = {
 		"merchant_id": MERCHANT,
 		"amount": amount, # int
-		"currency": currency, # Rial -> IRR & Toman -> IRT not required
+		"currency": CURRENCY, # Rial -> IRR & Toman -> IRT not required
 		"description": description, # required
-		"callback_url": CallbackURL, # required
+		"callback_url": callbackURL, # required
 		"metadata": {
 			"mobile": "", # optional
 			"email": "", # optional
@@ -45,15 +62,28 @@ def send_request(request):
         "content-type": "application/json"
 	}
 
+	# 
+	if not isinstance(amount, int):
+		error_code = "local 1"
+		error_message = "مبلغ ارسالی به درگاه باید از نوع int باشد."
+		return render(request,
+					  "payments/errors.html",
+					  {"error_code": error_code,
+					   "error_message": error_message,})
+
 	# send the request to ZP_API_REQUEST
 	response = requests.post(ZP_API_REQUEST_URL, 
 							 data=json.dumps(request_data), 
 							 headers=request_header)
-	authority = response.json()['data']['authority']
-	code = response.json()['data']['code']
-	errors = response.json()['errors']
-
-	request.session["authority"] = authority
+	try:
+		authority = response.json()['data']['authority']
+		code = response.json()['data']['code']
+		errors = response.json()['errors']
+		request.session["authority"] = authority
+	except:
+		errors = response.json()['errors']
+		code = None
+	
 
 	# success operations
 	if code == 100 and len(errors) == 0:
@@ -70,7 +100,6 @@ def send_request(request):
 
 def verify(request):
 	amount = request.session.get("amount")
-	currency = "IRT"
 	order_id = request.session.get("order_id")
 	send_authority = request.session.get("authority")
 
@@ -89,7 +118,7 @@ def verify(request):
 		request_data = {
 			"merchant_id": MERCHANT,
 			"amount": amount, # int
-			"currency": currency, # Rial -> IRR & Toman -> IRT not required
+			"currency": CURRENCY, # Rial -> IRR & Toman -> IRT not required
 			"authority": get_authority, # required
 		}
 		request_header = {
@@ -102,9 +131,17 @@ def verify(request):
 			response = requests.post(ZP_API_VERIFY_URL, 
 							 data=json.dumps(request_data), 
 							 headers=request_header)
-			code = response.json()['data']['code']
-			transaction_id = response.json()['data']['ref_id']
-			errors = response.json()['errors']
+			try:
+				code = response.json()['data']['code']
+				transaction_id = response.json()['data']['ref_id']
+				errors = response.json()['errors']
+			except:
+				error_code = "local verify 1"
+				error_message = "تایید تراکنش شما با خطا مواجه شده است."
+				return render(request,
+							"payments/payment-unsuccessful-verify.html",
+							{"error_code": error_code,
+							"error_message": error_message,})
 
 			# check it to sure, transaction successfully
 			if len(errors) == 0:
@@ -112,6 +149,7 @@ def verify(request):
 					# show successfully transaction and paid order in database
 					order = get_object_or_404(Order, id=order_id)
 					order.transaction_id = transaction_id
+					order.paid = True
 					order.save()
 
 					# launch Asynchronous task
@@ -119,14 +157,16 @@ def verify(request):
 
 					return render(request,
 						  		  "payments/payment-success.html",
-						         {"order": order})
+						         {"code": code,
+								  "order": order})
 					
 				elif code == 101:
 					# show transaction submitted
 					order = get_object_or_404(Order, id=order_id)
 					return render(request,
 						          "payments/payment-success.html",
-						         {"order": order})
+						         {"code": code,
+								  "order": order})
 				else:
 					# show failed transaction
 					error_code = code
@@ -150,7 +190,14 @@ def verify(request):
 			# show unsuccessful transaction and unpaid order in database
 			# show error message to the user
 			return render(request,
-						  "payments/payment-unsuccessfull.html",)
+						  "payments/payment-unsuccessful.html",)
+		else:
+			error_code = "local verify 1"
+			error_message = "تایید تراکنش شما با خطا مواجه شده است."
+			return render(request,
+						"payments/payment-unsuccessful-verify.html",
+						{"error_code": error_code,
+						"error_message": error_message,})
 	else:
 		# method not found
 		return HttpResponse('Method not allowed')

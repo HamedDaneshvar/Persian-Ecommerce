@@ -47,7 +47,7 @@ def order_create(request):
 
 			request.session['amount'] = order.get_total_cost()
 			request.session['order_id'] = order.id
-			# return redirect('payments:request')
+			return redirect('payments:request')
 
 			send_mail_order_created(order.id)
 			return render(request,
