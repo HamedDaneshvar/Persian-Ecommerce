@@ -1,5 +1,6 @@
 import re
 import json
+from decimal import Decimal
 import requests
 from django.shortcuts import (
 	render,
@@ -134,10 +135,16 @@ def verify(request):
 			try:
 				code = response.json()['data']['code']
 				transaction_id = response.json()['data']['ref_id']
+				fee = response.json()['data']['fee']
+
+				# cause banktest or zarinpal bug to get amount as toman
+				fee /= 10
+
 				errors = response.json()['errors']
 			except:
-				error_code = "local verify 1"
-				error_message = "تایید تراکنش شما با خطا مواجه شده است."
+				errors = response.json()['errors']
+				error_code = errors['code']
+				error_message = errors['message']
 				return render(request,
 							"payments/payment-unsuccessful-verify.html",
 							{"error_code": error_code,
@@ -150,6 +157,7 @@ def verify(request):
 					order = get_object_or_404(Order, id=order_id)
 					order.transaction_id = transaction_id
 					order.paid = True
+					order.fee = Decimal(fee)
 					order.save()
 
 					# launch Asynchronous task

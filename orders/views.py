@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.shortcuts import (
 	render,
 	redirect,
@@ -44,6 +45,13 @@ def order_create(request):
 			
 			# launch Asynchronous task
 			# order_created.delay(order.id)
+
+			if Decimal(order.get_total_cost()) == 0:
+				order.paid = True
+				return render(request,
+							  "payments/payment-success.html",
+						      {"code": 100,
+							  "order": order})
 
 			request.session['amount'] = order.get_total_cost()
 			request.session['order_id'] = order.id

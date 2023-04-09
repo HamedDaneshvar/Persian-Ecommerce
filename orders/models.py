@@ -34,6 +34,10 @@ class Order(GeneralModel):
 								MaxValueValidator(100),])
 	transaction_id = models.IntegerField(verbose_name=_("Transaction ID"), 
 										 null=True)
+	fee = models.DecimalField(max_digits=10,
+							  decimal_places=2,
+							  default=0,
+							  verbose_name=_("Fee"))
 
 	class Meta:
 		ordering = ["-create_at"]
@@ -69,7 +73,7 @@ class OrderItem(GeneralModel):
 	product = models.ForeignKey(Product,
 								on_delete=models.CASCADE,
 								related_name="order_items",)
-	price = models.DecimalField(max_digits=10,
+	price = models.DecimalField(max_digits=12,
 								decimal_places=2,
 								verbose_name=_("Price"))
 	quantity = models.PositiveIntegerField(default=1,
