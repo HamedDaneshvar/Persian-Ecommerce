@@ -40,7 +40,11 @@
 			</div>
 			<!-- Login Meta-->
 			<div class="login-meta-data"><a class="forgot-password d-block mt-3 mb-1" href="{% url 'accounts:password_reset' %}">رمز عبور را فراموش کرده اید؟</a>
+			{% if request.GET.next %}
+			<p class="mb-0">حساب کاربری ندارید؟ <a class="ml-1" href="{% url 'accounts:signup' %}?next=/orders/create/">اکنون ثبت نام کنید</a></p>
+			{% else %}
 			<p class="mb-0">حساب کاربری ندارید؟ <a class="ml-1" href="{% url 'accounts:signup' %}">اکنون ثبت نام کنید</a></p>
+			{% endif %}
 			</div>
 		</div>
 		</div>
