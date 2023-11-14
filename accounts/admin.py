@@ -1,10 +1,10 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .forms import (
+from accounts.forms import (
     CustomUserCreationForm,
     CustomUserChangeForm,
 )
-from .models import CustomUser
+from accounts.models import CustomUser
 
 
 @admin.register(CustomUser)

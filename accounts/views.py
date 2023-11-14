@@ -8,7 +8,7 @@ from django.contrib.auth import (
 )
 from django.contrib.auth.decorators import login_required
 from accounts.models import CustomUser
-from .forms import (
+from accounts.forms import (
     CustomUserCreationForm,
     ProfileForm,
 )

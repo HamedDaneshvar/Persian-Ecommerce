@@ -1,5 +1,5 @@
 from django.test import TestCase
-from .models import CustomUser, get_file_path
+from accounts.models import CustomUser, get_file_path
 
 
 class CustomUserModelTest(TestCase):

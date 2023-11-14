@@ -5,7 +5,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinLengthValidator
 from django.utils.translation import gettext as _
 from utils.general_model import GeneralModel
-from .managers import CustomUserManager
+from accounts.managers import CustomUserManager
 
 
 def get_file_path(instance, filename):
