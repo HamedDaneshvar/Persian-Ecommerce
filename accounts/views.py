@@ -52,7 +52,11 @@ def profile(request):
 @login_required
 def edit_profile(request):
     """
+<<<<<<< HEAD
     View function for editing user profile page.
+=======
+    View function for editing user profile.
+>>>>>>> 2515f6f20d4c9e91ebb2f57c27dc5a36a88ea02f
     """
 
     user = CustomUser.objects.get(id=request.user.id)
