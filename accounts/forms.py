@@ -35,14 +35,7 @@ class CustomUserChangeForm(UserChangeForm):
 
 
 class ProfileForm(forms.ModelForm):
-    # initial_data = {
-    # 	"nick_name": ,
-    # 	"full_name": ,
-    # 	"phone": ,
-    # 	"email": ,
-    # 	"address": ,
-    # 	"avatar": ,
-    # }
+
     class Meta:
         model = CustomUser
         fields = ("nick_name", "full_name", "phone",
