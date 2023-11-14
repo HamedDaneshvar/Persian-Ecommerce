@@ -62,15 +62,6 @@ class CustomUserModelTest(TestCase):
         self.assertEqual(superuser.is_superuser, True)
 
 
-# class GetFilePathTest(TestCase):
-#     def test_get_file_path(self):
-#         instance = None  # Create a mock instance for testing purposes
-#         filename = 'example.jpg'
-#         expected_path = 'users/example.jpg'
-
-#         actual_path = get_file_path(instance, filename)
-
-#         self.assertEqual(actual_path, expected_path)
 class GetFilePathTest(TestCase):
     def test_get_file_path(self):
         instance = None
