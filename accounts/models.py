@@ -9,12 +9,30 @@ from .managers import CustomUserManager
 
 
 def get_file_path(instance, filename):
+    """
+    Function to generate a unique file path for user avatar.
+
+    Args:
+        instance: The instance of the user model.
+        filename (str): The original filename of the uploaded file.
+
+    Returns:
+        str: The unique file path for the user avatar.
+    """
+
     ext = filename.split('.')[-1]
     filename = '%s.%s' % (uuid.uuid4(), ext)
     return os.path.join('users/', filename)
 
 
 class CustomUser(AbstractUser, GeneralModel):
+    """
+    Custom user model for the accounts app.
+
+    This model extends the AbstractUser class provided by Django and adds
+    additional fields.
+    """
+
     first_name = None
     last_name = None
     full_name = models.CharField(max_length=128,
@@ -47,4 +65,11 @@ class CustomUser(AbstractUser, GeneralModel):
     objects = CustomUserManager()
 
     def __str__(self):
+        """
+        Get a string representation of the user.
+
+        Returns:
+            str: The email address of the user.
+        """
+
         return self.email
