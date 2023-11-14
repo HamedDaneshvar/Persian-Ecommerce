@@ -76,6 +76,20 @@ class CustomUser(AbstractUser, GeneralModel):
 
     objects = CustomUserManager()
 
+    def save(self, *args, **kwargs):
+        """
+        Override the save method to set the username as the email address.
+
+        This method automatically sets the value of the username field as
+        the value of the email field when a CustomUser instance is saved.
+
+        Args:
+            *args: Additional positional arguments passed to the save method.
+            **kwargs: Additional keyword arguments passed to the save method.
+        """
+        self.username = self.email
+        super().save(*args, **kwargs)
+
     def __str__(self):
         """
         Get a string representation of the user.
