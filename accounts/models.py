@@ -35,29 +35,41 @@ class CustomUser(AbstractUser, GeneralModel):
 
     first_name = None
     last_name = None
-    full_name = models.CharField(max_length=128,
-                                 blank=True,
-                                 null=True,
-                                 verbose_name=_("Full name"),)
-    nick_name = models.CharField(max_length=128,
-                                 blank=True,
-                                 null=True,
-                                 verbose_name=_("Nick name"),)
-    email = models.EmailField(unique=True,
-                              verbose_name=_("Email address"),)
-    phone = models.CharField(max_length=13,
-                             validators=[MinLengthValidator(10)],
-                             blank=True,
-                             null=True,
-                             verbose_name=_("Phone"),)
-    address = models.CharField(max_length=512,
-                               blank=True,
-                               null=True,
-                               verbose_name=_("Address"),)
-    avatar = models.ImageField(upload_to=get_file_path,
-                               null=True,
-                               blank=True,
-                               verbose_name=_("Image profile"),)
+    full_name = models.CharField(
+        max_length=128,
+        blank=True,
+        null=True,
+        verbose_name=_("Full name"),
+    )
+    nick_name = models.CharField(
+        max_length=128,
+        blank=True,
+        null=True,
+        verbose_name=_("Nick name"),
+    )
+    email = models.EmailField(
+        unique=True,
+        verbose_name=_("Email address"),
+    )
+    phone = models.CharField(
+        max_length=13,
+        validators=[MinLengthValidator(10)],
+        blank=True,
+        null=True,
+        verbose_name=_("Phone"),
+    )
+    address = models.CharField(
+        max_length=512,
+        blank=True,
+        null=True,
+        verbose_name=_("Address"),
+    )
+    avatar = models.ImageField(
+        upload_to=get_file_path,
+        null=True,
+        blank=True,
+        verbose_name=_("Image profile"),
+    )
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
