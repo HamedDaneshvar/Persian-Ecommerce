@@ -15,6 +15,10 @@ from accounts.forms import (
 
 
 def signup(request):
+    """
+    View function for user registration/signup.
+    """
+
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
@@ -37,12 +41,20 @@ def signup(request):
 
 @login_required
 def profile(request):
+    """
+    View function for user profile page.
+    """
+
     return render(request,
                   "accounts/profile.html",)
 
 
 @login_required
 def edit_profile(request):
+    """
+    View function for editing user profile.
+    """
+
     user = CustomUser.objects.get(id=request.user.id)
     if request.method == "POST":
         form = ProfileForm(request.POST, request.FILES, instance=user)
