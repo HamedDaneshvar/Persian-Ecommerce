@@ -55,7 +55,7 @@
 		  <!-- Login Meta-->
 		  <div class="login-meta-data">
 			{% if request.GET.next %}
-			<p class="mt-3 mb-0">قبلاً حساب دارید؟ <a class="ml-1" href="{% url 'accounts:login' %}?next=/orders/create/">ورود</a></p>
+			<p class="mt-3 mb-0">قبلاً حساب دارید؟ <a class="ml-1" href="{% url 'accounts:login' %}?next={{ request.GET.next }}">ورود</a></p>
 			{% else %}
 			<p class="mt-3 mb-0">قبلاً حساب دارید؟ <a class="ml-1" href="{% url 'accounts:login' %}">ورود</a></p>
 			{% endif %}
