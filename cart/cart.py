@@ -104,6 +104,7 @@ class Cart():
         Remove cart and coupon from session
         """
         del self.session[settings.CART_SESSION_ID]
+        self.cart = {}
         if self.session.get("coupon_id", None):
             del self.session["coupon_id"]
             del self.session["coupon_code"]
