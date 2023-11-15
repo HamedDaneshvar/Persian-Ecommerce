@@ -5,6 +5,10 @@ from utils.general_model import GeneralModel
 
 
 class Category(GeneralModel):
+    """
+    Model representing a category for products.
+    """
+
     name = models.CharField(
         max_length=250,
         verbose_name=_("Name"),)
@@ -22,13 +26,25 @@ class Category(GeneralModel):
         verbose_name_plural = _("Categories")
 
     def __str__(self):
+        """
+        String representation of the category.
+        """
+
         return self.name
 
     def get_absolute_url(self):
+        """
+        Get the absolute URL of the category.
+        """
+
         return reverse('shop:product_list_by_category', args=[self.slug,])
 
 
 class Product(GeneralModel):
+    """
+    Model representing a product in the shop.
+    """
+
     category = models.ForeignKey(
         Category,
         on_delete=models.CASCADE,
@@ -65,7 +81,15 @@ class Product(GeneralModel):
         ]
 
     def __str__(self):
+        """
+        String representation of the product.
+        """
+
         return self.name
 
     def get_absolute_url(self):
+        """
+        Get the absolute URL of the product.
+        """
+
         return reverse('shop:product_detail', args=[self.id, self.slug,])
