@@ -31,7 +31,7 @@ def product_list(request, category_slug=None):
         product_exist = False
         products_description = "این فروشگاه محصولی را ثبت نکرده است."
 
-    if category_slug:
+    if category_slug and product_exist:
         category = get_object_or_404(
             Category,
             slug=category_slug,
