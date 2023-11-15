@@ -3,13 +3,24 @@ from django.shortcuts import (
     get_object_or_404,
 )
 from cart.forms import CartAddProductForm
-from .models import (
+from shop.models import (
     Category,
     Product,
 )
 
 
 def product_list(request, category_slug=None):
+    """
+    View function for displaying a list of products.
+
+    Args:
+        request: The HTTP request object.
+        category_slug: Optional category slug to filter products by category.
+
+    Returns:
+        The rendered template with the list of products.
+    """
+
     category = None
     grid = False
     product_exist = True
@@ -55,6 +66,18 @@ def product_list(request, category_slug=None):
 
 
 def product_detail(request, id, slug):
+    """
+    View function for displaying the details of a product.
+
+    Args:
+        request: The HTTP request object.
+        id: The ID of the product.
+        slug: The slug of the product.
+
+    Returns:
+        The rendered template with the product details.
+    """
+
     product = get_object_or_404(
         Product,
         id=id,
