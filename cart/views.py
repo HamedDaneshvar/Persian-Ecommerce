@@ -3,6 +3,7 @@ from django.shortcuts import (
     redirect,
     get_object_or_404,
 )
+from django.http import Http404
 from django.views.decorators.http import require_POST
 from shop.models import Product
 from coupons.forms import CouponApplyForm
@@ -32,7 +33,10 @@ def cart_add(request, product_id):
         Http404: If the product with the specified ID does not exist.
     """
     cart = Cart(request)
-    product = get_object_or_404(Product, id=product_id)
+    try:
+        product = get_object_or_404(Product, id=product_id)
+    except Http404:
+        return render(request, "cart/detail.html", status=404)
     form = CartAddProductForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
@@ -63,7 +67,10 @@ def cart_remove(request, product_id):
         Http404: If the product with the specified ID does not exist.
     """
     cart = Cart(request)
-    product = get_object_or_404(Product, id=product_id)
+    try:
+        product = get_object_or_404(Product, id=product_id)
+    except Http404:
+        return render(request, "cart/detail.html", status=404)
     cart.remove(product)
     return redirect('cart:cart_detail')
 
