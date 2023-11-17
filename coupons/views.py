@@ -40,8 +40,13 @@ def coupon_apply(request):
             except Coupon.DoesNotExist:
                 request.session["coupon_id"] = None
                 request.session["coupon_code"] = code
+        else:
+            request.session["coupon_id"] = None
     else:
         request.session["coupon_id"] = None
-        del request.session["coupon_code"]
+        try:
+            del request.session["coupon_code"]
+        except KeyError:
+            pass
 
     return redirect("cart:cart_detail")
