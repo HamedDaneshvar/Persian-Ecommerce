@@ -4,6 +4,20 @@ from utils.general_model import GeneralModel
 
 
 class Transport(GeneralModel):
+    """
+    Represents a transport option for delivery in the e-commerce system.
+
+    Attributes:
+        - name (str): The name of the transport option.
+        - delivery (str): The description of the delivery service.
+        - price (Decimal): The price of the transport option.
+        - activate (bool): Indicates whether the transport option is currently
+          active.
+
+    Methods:
+        - __str__: Returns a string representation of the transport option.
+
+    """
     name = models.CharField(max_length=255,
                             verbose_name=_("Name"),)
     delivery = models.CharField(max_length=225,
