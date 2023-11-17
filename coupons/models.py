@@ -1,9 +1,11 @@
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.core.validators import (
     MinValueValidator,
     MaxValueValidator,
 )
+from django.core.exceptions import ValidationError
 from utils.general_model import GeneralModel
 
 
@@ -35,3 +37,22 @@ class Coupon(GeneralModel):
 
     def __str__(self):
         return self.code
+
+    def clean(self):
+        if self.discount < 0 or self.discount > 100:
+            raise ValidationError("Discount must be between 0 and 100.")
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
+
+    def is_valid(self):
+        """
+        Checks if the coupon is currently valid based on the valid_from and
+        valid_to attributes.
+
+        Returns:
+            bool: True if the coupon is valid, False otherwise.
+        """
+        now = timezone.now()
+        return self.valid_from <= now <= self.valid_to
