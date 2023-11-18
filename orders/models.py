@@ -10,7 +10,28 @@ from shop.models import Product
 from coupons.models import Coupon
 from transportation.models import Transport
 
+
 class Order(GeneralModel):
+    """
+    Model representing an order.
+
+    This model stores information about an order placed by a customer.
+    It includes details such as the associated coupon, transport, customer
+    information, order status, and total cost.
+
+    Attributes:
+        - coupon (ForeignKey): The associated coupon for the order.
+        - transport (ForeignKey): The transport method chosen for the order.
+        - full_name (CharField): The full name of the customer.
+        - email (EmailField): The email address of the customer.
+        - phone (CharField): The phone number of the customer.
+        - address (CharField): The address for the delivery.
+        - paid (BooleanField): Indicates if the order has been paid.
+        - discount (IntegerField): The discount percentage for the order.
+        - transaction_id (IntegerField): The transaction ID for the order
+          payment.
+        - fee (DecimalField): The additional fee for the order.
+    """
     coupon = models.ForeignKey(Coupon,
                                on_delete=models.SET_NULL,
                                related_name="orders",
@@ -50,15 +71,35 @@ class Order(GeneralModel):
         return f"Order {self.id}"
 
     def get_total_cost_before_discount(self):
+        """
+        Calculate the total cost of the order items before applying any
+        discount.
+
+        Returns:
+            Decimal: The total cost before discount.
+        """
         return sum(item.get_cost() for item in self.items.all())
 
     def get_discount(self):
+        """
+        Calculate the discount amount for the order.
+
+        Returns:
+            Decimal: The discount amount.
+        """
         total_cost = self.get_total_cost_before_discount()
         if self.discount:
             return total_cost * (self.discount / Decimal(100))
         return Decimal(0)
 
     def get_total_cost(self):
+        """
+        Calculate the total cost of the order, including any additional fees
+        and discounts.
+
+        Returns:
+            str: The total cost of the order as a string.
+        """
         transport_price = Decimal(0)
         if self.transport:
             transport_price = self.transport.price
@@ -68,6 +109,19 @@ class Order(GeneralModel):
 
 
 class OrderItem(GeneralModel):
+    """
+    Model representing an item within an order.
+
+    This model stores information about an item included in an order.
+    It includes details such as the associated order, product, price, and
+    quantity.
+
+    Attributes:
+        - order (ForeignKey): The associated order for the item.
+        - product (ForeignKey): The associated product for the item.
+        - price (DecimalField): The price of the item.
+        - quantity (PositiveIntegerField): The quantity of the item.
+    """
     order = models.ForeignKey(Order,
                               on_delete=models.CASCADE,
                               related_name="items",)
@@ -84,4 +138,10 @@ class OrderItem(GeneralModel):
         return str(self.id)
 
     def get_cost(self):
+        """
+        Calculate the total cost of the item.
+
+        Returns:
+            Decimal: The total cost of the item.
+        """
         return self.price * self.quantity
