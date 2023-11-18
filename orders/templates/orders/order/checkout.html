@@ -34,18 +34,38 @@
               <div class="mb-3">
                 <div class="title mb-2"><i class="lni lni-user"></i><span>نام و نام خانوادگی</span></div>
                 {% render_field order_form.full_name class+="form-control" placeholder="ندا رضوانی" %}
+                {% if order_form.full_name.errors %}
+                <div class="invalid-feedback d-block">
+                  {{ order_form.full_name.errors }}
+                </div>
+                {% endif %}
               </div>
               <div class="mb-3">
                 <div class="title mb-2"><i class="lni lni-envelope"></i><span>آدرس ایمیل</span></div>
                 {% render_field order_form.email class+="form-control" placeholder="example@gmail.com" %}
+                {% if order_form.email.errors %}
+                <div class="invalid-feedback d-block">
+                  {{ order_form.email.errors }}
+                </div>
+                {% endif %}
               </div>
               <div class="mb-3">
                 <div class="title mb-2"><i class="lni lni-phone"></i><span>تلفن</span></div>
                 {% render_field order_form.phone class+="form-control" placeholder="09121234567" %}
+                {% if order_form.phone.errors %}
+                <div class="invalid-feedback d-block">
+                  {{ order_form.phone.errors }}
+                </div>
+                {% endif %}
               </div>
               <div class="mb-3">
                 <div class="title mb-2"><i class="lni lni-map-marker"></i><span>آدرس حمل و نقل</span></div>
                 {% render_field order_form.address class+="form-control" placeholder="تهران - ونک - خ فلان - ک فلان - ساختمان فلان - واحد 5 کد پستی: 1234567890" %}
+                {% if order_form.address.errors %}
+                <div class="invalid-feedback d-block">
+                  {{ order_form.address.errors }}
+                </div>
+                {% endif %}
               </div>
             </div>
           </div>
@@ -75,6 +95,11 @@
                 </ul>
               {% comment %} </form> {% endcomment %}
             </div>
+            {% if transportation_form.errors %}
+                <div class="invalid-feedback d-block">
+                  {{ transportation_form.errors }}
+                </div>
+            {% endif %}
           </div>
         </div>
       </div>
