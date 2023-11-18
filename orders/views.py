@@ -18,6 +18,24 @@ User = get_user_model()
 
 
 def order_create(request):
+    """
+    View function to create a new order.
+
+    This view handles the creation of a new order and the associated order
+    items. It validates the order form and the transportation form, saves the
+    order, creates the order items, and performs additional tasks such as
+    clearing the cart, launching asynchronous tasks, and sending order
+    creation emails.
+
+    Parameters:
+        - request: The HTTP request object.
+
+    Returns:
+        - If the order total cost is zero, it renders the payment success
+          template.
+        - If the order total cost is non-zero, it redirects to the payment
+          request view.
+    """
     if request.user.is_anonymous:
         url = reverse('accounts:login') + \
             "?next=" + reverse("orders:order_create")
