@@ -102,7 +102,7 @@ class Order(GeneralModel):
         """
         transport_price = Decimal(0)
         if self.transport:
-            transport_price = self.transport.price
+            transport_price = Decimal(self.transport.price)
         total_cost = self.get_total_cost_before_discount() + transport_price
         return str(total_cost - self.get_discount())
     get_total_cost.short_description = _("Total cost")
