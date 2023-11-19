@@ -10,6 +10,7 @@ from django.shortcuts import (
 from django.urls import reverse
 from django.http import HttpResponse
 from decouple import config
+from payments.models import Payment
 from orders.models import Order
 from orders.tasks import order_created
 
@@ -33,7 +34,22 @@ ZP_API_STARTPAY_URL = "https://sandbox.banktest.ir/zarinpal/www.zarinpal.com" \
     + "/pg/StartPay/{authority}"
 
 
+def get_merchant():
+    payments = Payment.objects.filter(available=True)
+    if not payments:
+        return False
+    global ZARINPAL_MERCHANT
+    ZARINPAL_MERCHANT = payments.filter(types="zarinpal")\
+        .values_list("merchant")[0][0]
+    return True
+
+
 def send_request(request):
+    gateway_status = get_merchant()
+    if not gateway_status:
+        print("We have receive your order but gateway is not active!")
+        # return to template when gateway is not active
+
     amount = request.session.get("amount")
     callbackURL = request.build_absolute_uri(reverse('payments:verify'))
     description = f"پرداخت هزینه سفارشی به مبلغ {amount}"
@@ -50,7 +66,7 @@ def send_request(request):
         request.session['amount'] = amount
 
     request_data = {
-        "merchant_id": MERCHANT,
+        "merchant_id": ZARINPAL_MERCHANT,
         "amount": amount,  # int
         "currency": CURRENCY,  # Rial -> IRR & Toman -> IRT not required
         "description": description,  # required
@@ -119,7 +135,7 @@ def verify(request):
                            "error_message": error_message, })
 
         request_data = {
-            "merchant_id": MERCHANT,
+            "merchant_id": ZARINPAL_MERCHANT,
             "amount": amount,  # int
             "currency": CURRENCY,  # Rial -> IRR & Toman -> IRT not required
             "authority": get_authority,  # required
