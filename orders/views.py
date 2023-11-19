@@ -81,12 +81,10 @@ def order_create(request):
 
             request.session['amount'] = order.get_total_cost()
             request.session['order_id'] = order.id
-            # return redirect('payments:request')
 
             send_mail_order_created(order.id)
-            return render(request,
-                          "orders/order/payment-success.html",
-                          {"order": order})
+            return redirect('payments:request')
+
         else:
             return render(request,
                           "orders/order/checkout.html",
