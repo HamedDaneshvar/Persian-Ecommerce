@@ -11,6 +11,11 @@ from django.urls import reverse
 from django.http import HttpResponse
 from payments.models import Payment
 from payments.payment_config import get_zarinpal_payment_url
+from payments.mails import (
+    send_mail_payment_successfull,
+    send_mail_payment_unsuccessfull,
+    send_mail_payment_gateway_inactive,
+)
 from orders.models import Order
 
 # CONSTANT
@@ -160,6 +165,7 @@ def verify(request):
 
                 errors = response.json()['errors']
             except:
+                send_mail_payment_unsuccessfull(order_id)
                 errors = response.json()['errors']
                 error_code = errors['code']
                 error_message = errors['message']
@@ -180,7 +186,7 @@ def verify(request):
 
                     # launch Asynchronous task
                     # order_created.delay(order.id)
-
+                    send_mail_payment_successfull(order_id)
                     return render(request,
                                   "payments/payment-success.html",
                                   {"code": code,
@@ -195,6 +201,7 @@ def verify(request):
                                    "order": order})
                 else:
                     # show failed transaction
+                    send_mail_payment_unsuccessfull(order_id)
                     error_code = code
                     error_message = "تراکنش شما با خطا مواجه شده است."
                     return render(request,
@@ -204,6 +211,7 @@ def verify(request):
 
             else:
                 # transaction unsuccessful, show failed transaction
+                send_mail_payment_unsuccessfull(order_id)
                 error_code = errors['code']
                 error_message = errors['message']
                 return render(request,
@@ -215,9 +223,11 @@ def verify(request):
             # Transaction rejected or unsuccuessfully
             # show unsuccessful transaction and unpaid order in database
             # show error message to the user
+            send_mail_payment_unsuccessfull(order_id)
             return render(request,
                           "payments/payment-unsuccessful.html",)
         else:
+            send_mail_payment_unsuccessfull(order_id)
             error_code = "local verify 1"
             error_message = "تایید تراکنش شما با خطا مواجه شده است."
             return render(request,
@@ -231,6 +241,7 @@ def verify(request):
 
 def inactive_gateway(request):
     order_id = request.session.get("order_id", None)
+    send_mail_payment_gateway_inactive(order_id)
     return render(request,
                   "payments/payment-gateway-inactive.html",
                   {"order_id": order_id})
