@@ -46,6 +46,7 @@ def send_request(request):
     if not gateway_status:
         print("We have receive your order but gateway is not active!")
         # return to template when gateway is not active
+        return redirect("payments:inactive_gateway")
 
     get_zarinpal_payment_url()
 
@@ -226,3 +227,10 @@ def verify(request):
     else:
         # method not found
         return HttpResponse('Method not allowed')
+
+
+def inactive_gateway(request):
+    order_id = request.session.get("order_id", None)
+    return render(request,
+                  "payments/payment-gateway-inactive.html",
+                  {"order_id": order_id})

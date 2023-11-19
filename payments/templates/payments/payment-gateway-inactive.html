@@ -1,0 +1,26 @@
+{% extends 'shop/shop-base.html' %}
+
+{% block title %}
+{% block header-title %}
+درگاه غیر فعال
+{% endblock header-title %}
+{% endblock title %}
+
+
+{% block header %}
+{% endblock header %}
+  
+
+{% block content %}
+<!-- Order/Payment Gateway Inactive-->
+<div class="order-success-wrapper">
+  <div class="content"><i class="lni lni-question-circle"></i>
+    <h5>سفارش شما دریافت شد</h5>
+    <p>ما جزئیات سفارش شما را به شماره <strong style="text-decoration: underline;">{{ order_id }}</strong> دریافت کردیم ولی به دلیل غیر فعال بودن درگاه های پرداخت، امکان پرداخت سفارش را ندارید. از اینکه ما را همراهی میکنید متشکریم.</p><a class="btn btn-warning mt-3" href="/">دوباره بخرید</a>
+  </div>
+</div>
+{% endblock content %}
+
+
+{% block footer %}
+{% endblock footer %}
