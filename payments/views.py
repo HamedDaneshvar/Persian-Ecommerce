@@ -9,39 +9,36 @@ from django.shortcuts import (
 )
 from django.urls import reverse
 from django.http import HttpResponse
-from decouple import config
 from payments.models import Payment
+from payments.payment_config import get_zarinpal_payment_url
 from orders.models import Order
-from orders.tasks import order_created
 
-
-# MERCHANT = config("MERCHANT")
-MERCHANT = 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX'
-ZP_API_REQUEST_URL = "https://sandbox.zarinpal.com/pg/v4/payment/request.json"
-ZP_API_VERIFY_URL = "https://sandbox.zarinpal.com/pg/v4/payment/verify.json"
-ZP_API_STARTPAY_URL = "https://sandbox.zarinpal.com/pg/StartPay/{authority}"
+# CONSTANT
 CURRENCY = "IRT"
-email = 'email@example.com'  # Optional
-mobile = '09123456789'  # Optional
-
-# test data from banktest.ir
-MERCHANT = config("MERCHANT")
-ZP_API_REQUEST_URL = "https://sandbox.banktest.ir/zarinpal/api.zarinpal.com" \
-    + "/pg/v4/payment/request.json"
-ZP_API_VERIFY_URL = "https://sandbox.banktest.ir/zarinpal/api.zarinpal.com" \
-    + "/pg/v4/payment/verify.json"
-ZP_API_STARTPAY_URL = "https://sandbox.banktest.ir/zarinpal/www.zarinpal.com" \
-    + "/pg/StartPay/{authority}"
 
 
 def get_merchant():
     payments = Payment.objects.filter(available=True)
     if not payments:
         return False
+
+    # get zarinpal merchant from db
     global ZARINPAL_MERCHANT
     ZARINPAL_MERCHANT = payments.filter(types="zarinpal")\
         .values_list("merchant")[0][0]
+
     return True
+
+
+def get_payments_url():
+    # get zarinpal payment urls
+    zarinpal_urls = get_zarinpal_payment_url()
+    global ZP_API_REQUEST_URL
+    global ZP_API_VERIFY_URL
+    global ZP_API_STARTPAY_URL
+    ZP_API_REQUEST_URL = zarinpal_urls[0]
+    ZP_API_VERIFY_URL = zarinpal_urls[1]
+    ZP_API_STARTPAY_URL = zarinpal_urls[2]
 
 
 def send_request(request):
@@ -49,6 +46,8 @@ def send_request(request):
     if not gateway_status:
         print("We have receive your order but gateway is not active!")
         # return to template when gateway is not active
+
+    get_zarinpal_payment_url()
 
     amount = request.session.get("amount")
     callbackURL = request.build_absolute_uri(reverse('payments:verify'))
