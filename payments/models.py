@@ -13,6 +13,16 @@ validate_merchant = RegexValidator(
 
 
 class Payment(GeneralModel):
+    """
+    Represents a payment method.
+
+    Attributes:
+        - name (str): The name of the payment method.
+        - merchant (str): The merchant ID associated with the payment method.
+        - types (str): The type of the payment method.
+        - available (bool): Indicates whether the payment method is available or
+          not.
+    """
     payment_choices = (
         ("zarinpal", _("Zarinpal Payment Gateway")),
     )
@@ -33,6 +43,12 @@ class Payment(GeneralModel):
         verbose_name_plural = _("Payments")
 
     def save(self, *args, **kwargs):
+        """
+        Overrides the default save method to validate the merchant ID.
+
+        Raises:
+            ValueError: If the merchant ID is not valid.
+        """
         try:
             validate_merchant(self.merchant)
         except ValidationError as e:
@@ -41,4 +57,10 @@ class Payment(GeneralModel):
         super().save(*args, **kwargs)
 
     def __str__(self):
+        """
+        Returns a string representation of the Payment object.
+
+        Returns:
+            str: A string representation of the Payment object.
+        """
         return f"{self.name}: {self.get_types_display()}"
