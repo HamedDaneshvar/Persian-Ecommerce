@@ -23,6 +23,13 @@ CURRENCY = "IRT"
 
 
 def get_merchant():
+    """
+    Get the merchant information from the database and store it in a global
+    variable. If no merchant is available, return False.
+
+    Returns:
+    - bool: True if merchant is available, False otherwise.
+    """
     payments = Payment.objects.filter(available=True)
     if not payments:
         return False
@@ -36,7 +43,9 @@ def get_merchant():
 
 
 def get_payments_url():
-    # get zarinpal payment urls
+    """
+    Get the payment URLs for Zarinpal and store them in global variables.
+    """
     zarinpal_urls = get_zarinpal_payment_url()
     global ZP_API_REQUEST_URL
     global ZP_API_VERIFY_URL
@@ -47,10 +56,19 @@ def get_payments_url():
 
 
 def send_request(request):
+    """
+    Send a payment request to the Zarinpal gateway.
+
+    Args:
+    - request (HttpRequest): The HTTP request object.
+
+    Returns:
+    - HttpResponseRedirect: Redirects the user to the Zarinpal gateway for
+      payment.
+    - HttpResponse: Renders an error page if the payment request fails.
+    """
     gateway_status = get_merchant()
     if not gateway_status:
-        print("We have receive your order but gateway is not active!")
-        # return to template when gateway is not active
         return redirect("payments:inactive_gateway")
 
     get_zarinpal_payment_url()
@@ -123,6 +141,16 @@ def send_request(request):
 
 
 def verify(request):
+    """
+    Verify the payment status and details after the user is redirected back
+    from the Zarinpal gateway.
+
+    Args:
+    - request (HttpRequest): The HTTP request object.
+
+    Returns:
+    - HttpResponse: Renders an error page if the payment verification fails.
+    """
     amount = request.session.get("amount")
     order_id = request.session.get("order_id")
     send_authority = request.session.get("authority")
@@ -240,6 +268,20 @@ def verify(request):
 
 
 def inactive_gateway(request):
+    """
+    Renders the template for an inactive payment gateway.
+
+    This function is called when the payment gateway is not active. It sends
+    an email notification to the user and renders the template for an inactive
+    payment gateway.
+
+    Args:
+        request: The HTTP request object.
+
+    Returns:
+        A rendered template for an inactive payment gateway.
+
+    """
     order_id = request.session.get("order_id", None)
     send_mail_payment_gateway_inactive(order_id)
     return render(request,
