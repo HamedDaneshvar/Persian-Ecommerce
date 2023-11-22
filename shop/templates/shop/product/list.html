@@ -13,10 +13,10 @@
 
 {% block header-option %}
 <!-- Filter Option-->
-<div class="filter-option" id="suhaNavbarToggler"><i class="lni lni-cog"></i></div>
+<div class="filter-option invisible" id="suhaNavbarToggler"><i class="lni lni-cog"></i></div>
 {% endblock header-option %}
 
-{% block sidebar %}
+{% comment %} {% block sidebar %}
 <!-- Side Nav Wrapper-->
 <div class="suha-sidenav-wrapper filter-nav" id="sidenavWrapper">
 	<!-- Catagory Sidebar Area-->
@@ -178,7 +178,7 @@
 	<!-- Go Back Button-->
 	<div class="go-home-btn" id="goHomeBtn"><i class="lni lni-arrow-right"></i></div>
 </div>	
-{% endblock sidebar %}
+{% endblock sidebar %} {% endcomment %}
 
 
 {% block content %}

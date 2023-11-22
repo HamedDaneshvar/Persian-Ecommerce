@@ -51,7 +51,7 @@
 			
 			{% block header-option %}
 			<!-- Navbar Toggler-->
-			<div class="suha-navbar-toggler d-flex justify-content-between flex-wrap" id="suhaNavbarToggler"><span></span><span></span><span></span></div>
+			<div class="suha-navbar-toggler d-flex justify-content-between flex-wrap invisible" id="suhaNavbarToggler"><span></span><span></span><span></span></div>
 			{% endblock header-option %}
 
 		</div>
@@ -61,7 +61,7 @@
 
 	
 	
-	{% block sidebar %}
+	{% comment %} {% block sidebar %}
 	<!-- Sidenav Black Overlay-->
     <div class="sidenav-black-overlay"></div>
 	<!-- Side Nav Wrapper-->
@@ -100,7 +100,7 @@
 		<!-- Go Back Button-->
 		<div class="go-home-btn" id="goHomeBtn"><i class="lni lni-arrow-right"></i></div>
 	</div>
-	{% endblock sidebar %}
+	{% endblock sidebar %} {% endcomment %}
 
 
 	{% block content %}
