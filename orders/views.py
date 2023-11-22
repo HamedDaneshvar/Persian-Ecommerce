@@ -5,11 +5,12 @@ from django.shortcuts import (
     redirect,
     get_object_or_404,
 )
+from django.contrib.auth.decorators import login_required
 from cart.cart import Cart
 from transportation.models import Transport
 from transportation.forms import TransportChoiceForm
 from django.contrib.auth import get_user_model
-from orders.models import OrderItem
+from orders.models import OrderItem, Order
 from orders.forms import OrderCreateForm
 # from orders.tasks import order_created
 from orders.mails import send_mail_order_created
@@ -101,3 +102,12 @@ def order_create(request):
                       {"order_form": order_form,
                        "transportation_form": transportation_form,
                        "transports": transports, })
+
+
+@login_required
+def orders_list(request):
+    user = User.objects.get(id=request.user.id)
+    orders = Order.objects.filter(email=user.email).order_by("-create_at")
+    return render(request,
+                  "orders/order/my-orders.html",
+                  {'orders': orders})
