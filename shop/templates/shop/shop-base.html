@@ -158,5 +158,37 @@
 		
 	{% endblock domready %}
 
+	{% block domreadyall %}
+	<script>
+		// Retrieve the visitedPages array from localStorage or initialize it to an empty array
+		var visitedPages = JSON.parse(localStorage.getItem('visitedPages')) || [];
+
+		// Function to update the visited pages array
+		function updateVisitedPages() {
+		// Add the current page URL to the array
+		visitedPages.push(window.location.href);
+
+		// Set the last item of the array as the back button URL
+		var backButton = document.querySelector('.back-button a');
+		backButton.href = visitedPages[visitedPages.length - 2] || '#'; // If there is no previous page, set the URL to '#'
+
+		// Save the visitedPages array to localStorage
+		localStorage.setItem('visitedPages', JSON.stringify(visitedPages));
+		}
+
+		// Call the updateVisitedPages function when the page loads
+		updateVisitedPages();
+
+		// Add an event listener to the back button
+		var backButton = document.querySelector('.back-button a');
+		backButton.addEventListener('click', function() {
+		visitedPages.pop(); // Remove the last item from the array
+
+		// Update the localStorage with the modified visitedPages array
+		localStorage.setItem('visitedPages', JSON.stringify(visitedPages));
+		});
+	</script>
+	{% endblock domreadyall %}
+
 </body>
 </html>
