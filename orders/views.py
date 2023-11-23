@@ -108,6 +108,20 @@ def order_create(request):
 
 @login_required
 def orders_list(request):
+    """
+    View function to display a list of orders for the logged-in user.
+
+    This view retrieves all orders associated with the currently logged-in user
+    and displays them in descending order based on their creation date. If no
+    orders are found, the user is redirected to the orders list page.
+
+    Parameters:
+        - request: The HTTP request object.
+
+    Returns:
+        - Renders the 'orders/order/my-orders.html' template, passing the
+          retrieved orders as the 'orders' context variable.
+    """
     user = request.user
     orders = user.orders.all().order_by("-create_at")
     return render(request,
@@ -117,6 +131,23 @@ def orders_list(request):
 
 @login_required
 def order_detail(request, id):
+    """
+    View function to display the details of a specific order.
+
+    This view retrieves the order associated with the currently logged-in user
+    and the provided order ID. If the order is not found, the user is redirected
+    to the orders list page. Otherwise, the order details and the associated
+    items are rendered in the 'orders/order/detail.html' template.
+
+    Parameters:
+        - request: The HTTP request object.
+        - id: The ID of the order to display.
+
+    Returns:
+        - Renders the 'orders/order/detail.html' template, passing the retrieved
+          order as the 'order' context variable and its associated items as the
+          'items' context variable.
+    """
     user = request.user
     try:
         order = get_object_or_404(Order, user=user, id=id)
