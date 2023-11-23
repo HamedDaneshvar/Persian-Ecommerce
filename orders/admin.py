@@ -37,8 +37,8 @@ class OrderAdmin(admin.ModelAdmin):
         - inlines (list): The inline classes associated with the Order admin
           page.
     """
-    list_display = ["full_name", "email", "phone", "address",
-                    "transport", "get_total_cost", "fee",
-                    "paid", "create_at", "updated_at"]
+    list_display = ["user", "full_name", "email", "phone", "address",
+                    "transport", "get_total_cost", "paid",
+                    "create_at", "updated_at"]
     list_filter = ["paid", "create_at", "updated_at",]
     inlines = [OrderItemInline]

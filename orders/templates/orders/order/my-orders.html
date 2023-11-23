@@ -45,7 +45,7 @@
                         
                         {% for order in orders %}
                         <tr>
-                            <th scope="row">{{ order.id }}</th>
+                            <th scope="row">{{ order.id }}#</th>
                             <td>{{ order.get_total_cost|floatformat:-2 }}</td>
                             <td>{% if order.paid %}
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="20" height="20" viewBox="0 0 256 256" xml:space="preserve">
@@ -71,7 +71,7 @@
                                 {% endif %}
                             </td>
                             <td class="ltr">{{ order.create_at|date:'Y-m-d H:i' }}</td>
-                            <td><a class="btn btn-info" href="#">جزئیات سفارش</a></td>
+                            <td><a class="btn btn-info" href="{% url 'orders:order_detail' order.id %}">جزئیات سفارش</a></td>
                         </tr>
                         {% endfor %}
                         </tbody>

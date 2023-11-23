@@ -1,4 +1,5 @@
 from decimal import Decimal
+from django.http import Http404
 from django.urls import reverse
 from django.shortcuts import (
     render,
@@ -54,6 +55,7 @@ def order_create(request):
 
         if order_form.is_valid() and transportation_form.is_valid():
             order = order_form.save(commit=False)
+            order.user = user
             transport = transportation_form.cleaned_data["transport"]
             order.transport = get_object_or_404(Transport, id=transport.id)
 
@@ -106,8 +108,23 @@ def order_create(request):
 
 @login_required
 def orders_list(request):
-    user = User.objects.get(id=request.user.id)
-    orders = Order.objects.filter(email=user.email).order_by("-create_at")
+    user = request.user
+    orders = user.orders.all().order_by("-create_at")
     return render(request,
                   "orders/order/my-orders.html",
                   {'orders': orders})
+
+
+@login_required
+def order_detail(request, id):
+    user = request.user
+    try:
+        order = get_object_or_404(Order, user=user, id=id)
+        items = order.items.all()
+    except Http404:
+        return redirect("orders:orders_list")
+
+    return render(request,
+                  "orders/order/detail.html",
+                  {"order": order,
+                   "items": items})

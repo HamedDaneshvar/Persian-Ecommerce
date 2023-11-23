@@ -1,5 +1,6 @@
 from decimal import Decimal
 from django.db import models
+from django.contrib.auth import get_user_model
 from django.core.validators import (
     MinValueValidator,
     MaxValueValidator,
@@ -9,6 +10,8 @@ from utils.general_model import GeneralModel
 from shop.models import Product
 from coupons.models import Coupon
 from transportation.models import Transport
+
+User = get_user_model()
 
 
 class Order(GeneralModel):
@@ -20,6 +23,7 @@ class Order(GeneralModel):
     information, order status, and total cost.
 
     Attributes:
+        - user (ForeignKey): The associated user for the order.
         - coupon (ForeignKey): The associated coupon for the order.
         - transport (ForeignKey): The transport method chosen for the order.
         - full_name (CharField): The full name of the customer.
@@ -30,8 +34,11 @@ class Order(GeneralModel):
         - discount (IntegerField): The discount percentage for the order.
         - transaction_id (IntegerField): The transaction ID for the order
           payment.
-        - fee (DecimalField): The additional fee for the order.
     """
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE,
+                             related_name="orders",
+                             verbose_name=_("User"))
     coupon = models.ForeignKey(Coupon,
                                on_delete=models.SET_NULL,
                                related_name="orders",
@@ -56,10 +63,6 @@ class Order(GeneralModel):
                                        MaxValueValidator(100),])
     transaction_id = models.IntegerField(verbose_name=_("Transaction ID"),
                                          null=True)
-    fee = models.DecimalField(max_digits=10,
-                              decimal_places=2,
-                              default=0,
-                              verbose_name=_("Fee"))
 
     class Meta:
         ordering = ["-create_at"]
