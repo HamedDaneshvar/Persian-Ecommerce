@@ -135,18 +135,18 @@ def order_detail(request, id):
     View function to display the details of a specific order.
 
     This view retrieves the order associated with the currently logged-in user
-    and the provided order ID. If the order is not found, the user is redirected
-    to the orders list page. Otherwise, the order details and the associated
-    items are rendered in the 'orders/order/detail.html' template.
+    and the provided order ID. If the order is not found, the user is
+    redirected to the orders list page. Otherwise, the order details and the
+    associated items are rendered in the 'orders/order/detail.html' template.
 
     Parameters:
         - request: The HTTP request object.
         - id: The ID of the order to display.
 
     Returns:
-        - Renders the 'orders/order/detail.html' template, passing the retrieved
-          order as the 'order' context variable and its associated items as the
-          'items' context variable.
+        - Renders the 'orders/order/detail.html' template, passing the
+          retrieved order as the 'order' context variable and its associated
+          items as the 'items' context variable.
     """
     user = request.user
     try:
