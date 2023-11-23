@@ -112,7 +112,7 @@ class OrderCreateViewTest(TestCase):
         self.cart.add(self.product1, quantity=2)
         self.cart.add(self.product2, quantity=1)
         response = order_create(self.request)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
         # self.assertTemplateUsed(response, "payments/payment-success.html")
         self.assertEqual(OrderItem.objects.count(), 2)
 
@@ -132,7 +132,7 @@ class OrderCreateViewTest(TestCase):
         self.cart.add(self.product2, quantity=1)
         response = order_create(self.request)
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
         # self.assertTemplateUsed(response, "payments/payment-success.html")
 
     def test_order_create_invalid_form_returns_form_errors(self):
@@ -155,7 +155,5 @@ class OrderCreateViewTest(TestCase):
             **self.transportation_form_data,
         })
 
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "orders/order/payment-success.html")
-        # Assert that the order is saved with the authenticated user
-        self.assertEqual(response.context["order"].email, self.user.email)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, reverse("payments:request"))

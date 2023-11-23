@@ -15,8 +15,8 @@ class OrderAdminTest(TestCase):
     def test_order_admin_list_display(self):
         self.assertEqual(
             self.order_admin.list_display,
-            ["full_name", "email", "phone", "address", "transport",
-             "get_total_cost", "fee", "paid", "create_at", "updated_at"]
+            ["user", "full_name", "email", "phone", "address", "transport",
+             "get_total_cost", "paid", "create_at", "updated_at"]
         )
 
     def test_order_admin_list_filter(self):
