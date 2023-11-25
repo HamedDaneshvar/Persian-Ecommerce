@@ -102,9 +102,10 @@
                     <p class="text-muted mb-0"><span class="font-weight-bold me-4">وضعیت پرداخت: </span>{% if order.paid  %}پرداخت موفق{% else %}پرداخت ناموفق{% endif %}</p>
                 </div>
             </div>
-            <div class="card-footer border-0 px-4 py-5"
+            <div class="card-footer border-0 px-4 py-5 d-flex justify-content-between"
             style="background-color: #a8729a; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
             <h5 class="d-flex align-items-center justify-content-start text-white text-uppercase mb-0">هزینه نهایی:&nbsp;&nbsp;<span class="h3 mb-0 ms-2">{{ order.get_total_cost|floatformat:-2 }}</span></h5>
+            {% if not order.paid %}<a class="btn btn-primary" href="{% url 'orders:order_payment' order.id %}">پرداخت سفارش</a>{% endif %}
             </div>
             </div>
         </div>

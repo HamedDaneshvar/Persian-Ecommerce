@@ -71,7 +71,10 @@
                                 {% endif %}
                             </td>
                             <td class="ltr">{{ order.create_at|date:'Y-m-d H:i' }}</td>
-                            <td><a class="btn btn-info" href="{% url 'orders:order_detail' order.id %}">جزئیات سفارش</a></td>
+                            <td>
+                                <a class="btn btn-info" href="{% url 'orders:order_detail' order.id %}">جزئیات سفارش</a>
+                                {% if not order.paid %}<a class="btn btn-primary" href="{% url 'orders:order_payment' order.id %}">پرداخت سفارش</a>{% endif %}
+                            </td>
                         </tr>
                         {% endfor %}
                         </tbody>

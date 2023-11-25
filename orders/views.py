@@ -159,3 +159,35 @@ def order_detail(request, id):
                   "orders/order/detail.html",
                   {"order": order,
                    "items": items})
+
+
+@login_required
+def send_to_payment(request, order_id):
+    """
+    View function to redirect the user to the payment request page.
+
+    This view retrieves the order associated with the currently logged-in user
+    and the provided order ID. If the order is not found, the user is
+    redirected to the orders list page. Otherwise, the order's total cost is
+    stored in the session along with the order ID. The user is then redirected
+    to the payment request view.
+
+    Parameters:
+        - request: The HTTP request object.
+        - order_id: The ID of the order to send to payment.
+
+    Returns:
+        - Redirects the user to the payment request view.
+
+    Raises:
+        - Http404: If the order with the provided ID is not found.
+    """
+    user = request.user
+    try:
+        order = get_object_or_404(Order, user=user, id=order_id)
+    except Http404:
+        return redirect("orders:orders_list")
+    amount = order.get_total_cost()
+    request.session["amount"] = amount
+    request.session["order_id"] = order_id
+    return redirect("payments:request")
