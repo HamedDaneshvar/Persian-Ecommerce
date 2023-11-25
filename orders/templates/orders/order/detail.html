@@ -1,0 +1,114 @@
+{% extends 'shop/shop-base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}
+سفارش شماره {{ order.id }}
+{% endblock title %}
+
+{% block header %}
+<!-- Header Area-->
+<div class="header-area" id="headerArea">
+    <div class="container h-100 d-flex align-items-center justify-content-between">
+    <!-- Back Button-->
+    <div class="back-button"><a href="{% url 'orders:orders_list' %}">
+        <i class="lni lni-arrow-right"></i></a></div>
+    <!-- Page Title-->
+    <div class="page-heading">
+        <h6 class="mb-0">سفارش شماره {{ order.id }}</h6>
+    </div>
+    {% block header-option %}
+    <!-- Navbar Toggler-->
+    <div class="suha-navbar-toggler d-flex justify-content-between flex-wrap invisible" id="suhaNavbarToggler"><span></span><span></span><span></span></div>
+    </div>
+    {% endblock header-option %}
+</div>
+{% endblock header %}
+
+{% block content %}
+<div class="page-content-wrapper">
+	<div class="container">
+        <div class="profile-wrapper-area py-3">
+            <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-wrap">
+                            <table class="table order-detail">
+                              <thead class="thead-primary">
+                                <tr>
+                                  <th>&nbsp;</th>
+                                  <th>محصول</th>
+                                  <th>قیمت</th>
+                                  <th>تعداد</th>
+                                  <th>جمع کل</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                
+                                {% for item in items %}
+                                <tr class="alert" role="alert">
+                                    <td>
+                                        <div class="img" style="background-image: url({{ item.product.image.url }});"></div>
+                                    </td>
+                                    <td>
+                                        <div class="email">
+                                            <span>{{ item.product.name }}</span>
+                                            <span>{{ item.product.description|truncatewords:7 }}</span>
+                                        </div>
+                                    </td>
+                                    <td>{{ item.product.price|floatformat:-2 }}</td>
+                                    <td class="quantity">{{ item.quantity }}</td>
+                                    <td>{{ item.get_cost|floatformat:-2 }}</td>
+                                </tr>
+                                {% endfor %}
+                              </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between pt-2">
+                    <p class="font-weight-bolder mb-0">جزئیات سفارش</p>
+                </div>
+                <div class="d-flex justify-content-between pt-2">
+                    <p class="text-muted mb-0 "><span class="font-weight-bold me-4">شماره سفارش: </span><span class="ltr">#{{ order.id }}</span></p>
+                </div>
+                <div class="d-flex justify-content-between pt-2">
+                    <p class="text-muted mb-0 "><span class="font-weight-bold me-4">نام و نام خانوادگی: </span><span>{{ order.full_name }}</span></p>
+                </div>
+                <div class="d-flex justify-content-between pt-2">
+                    <p class="text-muted mb-0 "><span class="font-weight-bold me-4">ایمیل: </span><span>{{ order.email }}</span></p>
+                </div>
+                <div class="d-flex justify-content-between pt-2">
+                    <p class="text-muted mb-0 "><span class="font-weight-bold me-4">شماره تماس: </span><span>{{ order.phone }}</span></p>
+                </div>
+                <div class="d-flex justify-content-between pt-2">
+                    <p class="text-muted mb-0 "><span class="font-weight-bold me-4">آدرس: </span><span>{{ order.address }}</span></p>
+                </div>
+                <div class="d-flex justify-content-between pt-2">
+                    <p class="text-muted mb-0"><span class="font-weight-bold me-4">ارسال: </span>{{ order.transport }}</p>
+                </div>
+                <div class="d-flex justify-content-between pt-2">
+                    <p class="text-muted mb-0"><span class="font-weight-bold me-4">تاریخ سفارش: </span>{{ order.create_at|date:'Y-m-d H:i' }}</p>
+                </div>
+                <div class="d-flex justify-content-between pt-2">
+                    <p class="text-muted mb-0"><span class="font-weight-bold me-4">هزینه کل: </span>{{ order.get_total_cost_before_discount|floatformat:-2 }}</p>
+                </div>
+                <div class="d-flex justify-content-between pt-2">
+                    <p class="text-muted mb-0"><span class="font-weight-bold me-4">تخفیف: </span>{{ order.get_discount|floatformat:-2 }}</p>
+                </div>
+                <div class="d-flex justify-content-between pt-2">
+                    <p class="text-muted mb-0"><span class="font-weight-bold me-4">وضعیت پرداخت: </span>{% if order.paid  %}پرداخت موفق{% else %}پرداخت ناموفق{% endif %}</p>
+                </div>
+            </div>
+            <div class="card-footer border-0 px-4 py-5 d-flex justify-content-between"
+            style="background-color: #a8729a; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+            <h5 class="d-flex align-items-center justify-content-start text-white text-uppercase mb-0">هزینه نهایی:&nbsp;&nbsp;<span class="h3 mb-0 ms-2">{{ order.get_total_cost|floatformat:-2 }}</span></h5>
+            {% if not order.paid %}<a class="btn btn-primary" href="{% url 'orders:order_payment' order.id %}">پرداخت سفارش</a>{% endif %}
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -1,14 +1,22 @@
 from decimal import Decimal
 from django.test import TestCase
 from django.utils import timezone
+from django.contrib.auth import get_user_model
 from coupons.models import Coupon
 from transportation.models import Transport
 from shop.models import Category, Product
 from orders.models import Order, OrderItem
 
 
+User = get_user_model()
+
+
 class OrderModelTest(TestCase):
     def setUp(self):
+        self.user = User.objects.create(
+            email="johndoe@example.com",
+            password="dqlj3r23u9f",
+            full_name="John Doe")
         self.coupon = Coupon.objects.create(
             code="SUMMER10",
             valid_from=timezone.now(),
@@ -23,6 +31,7 @@ class OrderModelTest(TestCase):
             activate=True
         )
         self.order = Order.objects.create(
+            user=self.user,
             coupon=self.coupon,
             transport=self.transport,
             full_name="John Doe",
@@ -32,7 +41,6 @@ class OrderModelTest(TestCase):
             paid=False,
             discount=10,
             transaction_id=12345,
-            fee=2.99
         )
         self.category = Category.objects.create(
             name='Test Category',
@@ -80,14 +88,18 @@ class OrderModelTest(TestCase):
 
 class OrderItemModelTest(TestCase):
     def setUp(self):
+        self.user = User.objects.create(
+            email="johndoe@example.com",
+            password="dqlj3r23u9f",
+            full_name="John Doe")
         self.order = Order.objects.create(
+            user=self.user,
             full_name="John Doe",
             email="johndoe@example.com",
             phone="1234567890",
             address="123 ABC Street",
             paid=False,
             discount=10,
-            fee=2.99
         )
         self.category = Category.objects.create(
             name='Test Category',
