@@ -36,7 +36,7 @@ def cart_add(request, product_id):
     try:
         product = get_object_or_404(Product, id=product_id)
     except Http404:
-        return render(request, "cart/detail.html", status=404)
+        return render(request, "404.html", status=404)
     form = CartAddProductForm(request.POST)
     if form.is_valid():
         cd = form.cleaned_data
@@ -70,7 +70,7 @@ def cart_remove(request, product_id):
     try:
         product = get_object_or_404(Product, id=product_id)
     except Http404:
-        return render(request, "cart/detail.html", status=404)
+        return render(request, "404.html", status=404)
     cart.remove(product)
     return redirect('cart:cart_detail')
 
