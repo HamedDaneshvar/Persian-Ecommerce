@@ -153,7 +153,7 @@ def order_detail(request, id):
         order = get_object_or_404(Order, user=user, id=id)
         items = order.items.all()
     except Http404:
-        return redirect("orders:orders_list")
+        return render(request, "404.html", status=404)
 
     return render(request,
                   "orders/order/detail.html",
@@ -186,7 +186,7 @@ def send_to_payment(request, order_id):
     try:
         order = get_object_or_404(Order, user=user, id=order_id)
     except Http404:
-        return redirect("orders:orders_list")
+        return render(request, "404.html", status=404)
     amount = order.get_total_cost()
     request.session["amount"] = amount
     request.session["order_id"] = order_id
