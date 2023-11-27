@@ -1,0 +1,2 @@
+-r base.txt
+commitizen~=3.12.0
