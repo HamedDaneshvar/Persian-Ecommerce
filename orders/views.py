@@ -13,7 +13,6 @@ from transportation.forms import TransportChoiceForm
 from django.contrib.auth import get_user_model
 from orders.models import OrderItem, Order
 from orders.forms import OrderCreateForm
-# from orders.tasks import order_created
 from orders.mails import send_mail_order_created
 
 User = get_user_model()
