@@ -27,7 +27,16 @@ urlpatterns = [
     path('payments/', include("payments.urls", namespace="payments")),
     path('', include("shop.urls", namespace="shop")),
 ]
+<<<<<<< HEAD
 urlpatterns += static(settings.MEDIA_URL,
                       document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL,
                       document_root=settings.STATIC_ROOT)
+=======
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL,
+                          document_root=settings.STATIC_ROOT)
+>>>>>>> f90b175c4ae3fb250d650addaf979dcc8cfd45f6
