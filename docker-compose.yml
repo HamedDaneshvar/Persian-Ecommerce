@@ -15,6 +15,7 @@ services:
         target: '/app'
     depends_on:
       - nginx
+      - postgresdb
 
   nginx:
     build: './nginx'
@@ -30,3 +31,14 @@ services:
       - type: 'bind'
         source: './volumes/media'
         target: '/app/media'
+
+  postgresdb:
+    image: postgres:alpine
+    container_name: 'postgres'
+    restart: 'always'
+    expose:
+      - '5432'
+    env_file:
+      - ./volumes/app/.env
+    volumes:
+      - ./volumes/dbdata:/var/lib/postgresql/data

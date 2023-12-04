@@ -9,10 +9,10 @@ DEBUG = False
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'db_name',
-        'USER': 'postgres',
-        'PASSWORD': 'db_password',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'NAME':  config("POSTGRES_DB", default="db_name"),
+        'USER': config("POSTGRES_USER", default="postgres"),
+        'PASSWORD': config("POSTGRES_PASSWORD", default="db_password"),
+        'HOST': config("POSTGRES_HOST", default="127.0.0.1"),
+        'PORT': config("POSTGRES_PORT", default="5432"),
     }
 }
