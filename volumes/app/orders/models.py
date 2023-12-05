@@ -1,6 +1,7 @@
 from decimal import Decimal
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
 from django.core.validators import (
     MinValueValidator,
     MaxValueValidator,
@@ -32,7 +33,7 @@ class Order(GeneralModel):
         - address (CharField): The address for the delivery.
         - paid (BooleanField): Indicates if the order has been paid.
         - discount (IntegerField): The discount percentage for the order.
-        - transaction_id (IntegerField): The transaction ID for the order
+        - transaction_id (CharField): The transaction ID for the order
           payment.
     """
     user = models.ForeignKey(User,
@@ -61,8 +62,34 @@ class Order(GeneralModel):
                                    validators=[
                                        MinValueValidator(0),
                                        MaxValueValidator(100),])
-    transaction_id = models.IntegerField(verbose_name=_("Transaction ID"),
-                                         null=True)
+    transaction_id = models.CharField(max_length=150,
+                                      verbose_name=_("Transaction ID"),
+                                      blank=True,
+                                      null=True)
+
+    def clean(self):
+        """
+        Validate the order before saving.
+
+        This method is automatically called by Django during the validation
+        process before saving the order. It checks if the order is marked as
+        paid but does not have a transaction ID, or if the order has a
+        transaction ID but is not marked as paid. If either of these
+        conditions is true, a validation error is raised.
+
+        Raises:
+            ValidationError: If the order is marked as paid but does not have
+                             a transaction ID, or if the order has a
+                             transaction ID but is not marked as paid.
+        """
+        if not self.paid and self.transaction_id:
+            raise ValidationError("If you activate \"Paid\", you must also \
+                                  enter the \"Transaction ID\" or remove \
+                                  both.")
+        elif self.paid and not self.transaction_id:
+            raise ValidationError("If you activate \"Paid\", you must also \
+                                  enter the \"Transaction ID\" or remove \
+                                  both.")
 
     class Meta:
         ordering = ["-create_at"]
