@@ -60,6 +60,7 @@ class Product(GeneralModel):
     image = models.ImageField(
         upload_to="products/%Y/%m/%d",
         blank=True,
+        null=True,
         verbose_name=_("Image"),)
     description = models.TextField(
         blank=True,
