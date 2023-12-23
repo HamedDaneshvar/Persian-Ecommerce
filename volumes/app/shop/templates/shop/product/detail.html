@@ -12,7 +12,7 @@
 <!-- Product Slides-->
 <div class="product-slides owl-carousel">
 	<!-- Single Hero Slide-->
-	<div class="single-product-slide" style="background-image: url({{ product.image.url }})"></div>
+	<div class="single-product-slide" style="background-image: url({% if product.image %} {{ product.image.url }} {% else %} {% static 'front/img/nopic.jpg' %} {% endif %})"></div>
 </div>
 <div class="product-description pb-3">
 	<!-- Product Title & Meta Data-->
