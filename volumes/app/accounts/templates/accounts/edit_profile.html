@@ -32,6 +32,13 @@
 	<div class="container">
 	  <!-- Profile Wrapper-->
 	  <div class="profile-wrapper-area py-3">
+		{% if form.non_field_errors %}
+			<div class="alert alert-danger">
+				{% for error in form.non_field_errors %}
+				{{ error }}
+				{% endfor %}
+			</div>
+		{% endif %}
 		<form method="post" enctype="multipart/form-data">
 			<!-- User Information-->
 			<div class="card user-info-card">
@@ -59,14 +66,29 @@
 				<div class="mb-3">
 					<div class="title mb-2"><i class="lni lni-user"></i><span>نام نمایشی</span></div>
 					{% render_field form.nick_name class+="form-control" placeholder="ندا" %}
+					{% for error in form.nick_name.errors %}
+						<div class="invalid-feedback d-block">
+							{{ error }}
+						</div>
+					{% endfor %}
 				</div>
 				<div class="mb-3">
 					<div class="title mb-2"><i class="lni lni-user"></i><span>نام و نام خانوادگی</span></div>
 					{% render_field form.full_name class+="form-control" placeholder="ندا رضوانی" %}
+					{% for error in form.full_name.errors %}
+						<div class="invalid-feedback d-block">
+							{{ error }}
+						</div>
+					{% endfor %}
 				</div>
 				<div class="mb-3">
 					<div class="title mb-2"><i class="lni lni-phone"></i><span>تلفن</span></div>
 					{% render_field form.phone class+="form-control" placeholder="09123456789" %}
+					{% for error in form.phone.errors %}
+						<div class="invalid-feedback d-block">
+							{{ error }}
+						</div>
+					{% endfor %}
 				</div>
 				<div class="mb-3">
 					<div class="title mb-2"><i class="lni lni-envelope"></i><span>آدرس ایمیل</span></div>
@@ -80,6 +102,11 @@
 				<div class="mb-3">
 					<div class="title mb-2"><i class="lni lni-map-marker"></i><span>آدرس حمل و نقل</span></div>
 					{% render_field form.address class+="form-control" placeholder="تهران - ونک" %}
+					{% for error in form.address.errors %}
+						<div class="invalid-feedback d-block">
+							{{ error }}
+						</div>
+					{% endfor %}
 				</div>
 				{% csrf_token %}
 				<button class="btn btn-success w-100" type="submit">ذخیره همه تغییرات</button>
