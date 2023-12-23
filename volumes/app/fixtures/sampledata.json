@@ -765,6 +765,14 @@
 },
 {
     "model": "sessions.session",
+    "pk": "gx1s6926up93k4ctyscpg4pi4pq0ljfw",
+    "fields": {
+        "session_data": "eyJjYXJ0Ijp7fX0:1r8CpX:mRxd9hQ3yP6RwdNWrV0lLYUSfqqpXzl5EuM8vaJF9Ww",
+        "expire_date": "2023-12-13T05:09:47.256Z"
+    }
+},
+{
+    "model": "sessions.session",
     "pk": "hnh7enq68pupsfjm4kl9g549m41do4z2",
     "fields": {
         "session_data": "eyJjYXJ0Ijp7fX0:1pM8lJ:azT7mMGJ0Aixv60Q6t5AnhFOFXbUnuZlW6RjeSpPP8M",
@@ -825,6 +833,14 @@
     "fields": {
         "session_data": "eyJjYXJ0Ijp7fX0:1r7wIM:Voo_vhZl9cbyPeV-542lN7E1sLkw7v9m6LiTaZ8avY8",
         "expire_date": "2023-12-12T11:30:26.315Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "nauypmqa533z48z7kt4j4gdhhsp5x9af",
+    "fields": {
+        "session_data": ".eJxVjDEOgzAMAP_iuYqMCU3C2J03ICc2hbYCKcCE-HsViYX17nQHJM4btMf5gJ73bez3VXM_CbRQwY1FTl-di5APz-_FpGXe8hRNScxlV9Mtor_X1d4GI69j2TZk6-B9jJ58VUvwFEmGEB2qoK21ccjsfMDgEicraitLqDQQOnw2cP4BBZY6LQ:1rAUwl:N5RVHtAXk6-u4TOLOiVbTBMSgHxQ6gXNHmOdC4v5sd4",
+        "expire_date": "2023-12-19T12:54:43.949Z"
     }
 },
 {
@@ -933,6 +949,22 @@
 },
 {
     "model": "sessions.session",
+    "pk": "yh91wgglqmnlrvi7ybqqu9r3v8awq4uf",
+    "fields": {
+        "session_data": "eyJjYXJ0Ijp7fX0:1rGuEk:kbkdb6wLUMOo8tKfyKLR7sj5F8pLX1LtM-ypsxKNEng",
+        "expire_date": "2024-01-06T05:07:46.450Z"
+    }
+},
+{
+    "model": "sessions.session",
+    "pk": "zt9edkee6d9nd4mcdrro817ertcr4ace",
+    "fields": {
+        "session_data": "eyJjYXJ0Ijp7fX0:1r8HLS:oiiJMTHKnjwe35i2tRmjKaLLmiKsNWJPG0uVk_o7WFg",
+        "expire_date": "2023-12-13T09:59:02.315Z"
+    }
+},
+{
+    "model": "sessions.session",
     "pk": "ztrg221onn2oo479411o3mjee33h9so3",
     "fields": {
         "session_data": ".eJxVjssOgyAQRf-FtSHDCAW67L7fYAYGq31Igroy_nsxcdFuz7k5uZvoaF2Gbp1T6UYWV6FE88sCxVeaDsFPmh5ZxjwtZQzymMjTzvKeOb1v5_YvMNA8HFmDuvXOheDQqZa9w4Dc-2AhMeg2GQtE1nnwNlLUnLTSCAl7BAsXU6P0yeu01BYaAJAAleXC53GlGhGpVL_t-xc2tEOI:1pTcaq:y6PEX9fR5UMpn-bBIzb2UfLUKritg6shRPXgwoph96U",
@@ -944,7 +976,7 @@
     "pk": 1,
     "fields": {
         "password": "pbkdf2_sha256$260000$M5H7HamPvNZ0zaW8EdL72C$Ej5L1XjPjG/hgQacxL5/h9Z+51DdFP7fKY8oYa8dDCw=",
-        "last_login": "2023-11-28T11:29:23Z",
+        "last_login": "2023-12-05T12:07:34.187Z",
         "is_superuser": true,
         "username": "admin@localhost",
         "is_staff": true,
@@ -976,7 +1008,7 @@
         "create_at": "2022-10-02T15:37:01.501Z",
         "updated_at": "2023-11-14T15:01:49.755Z",
         "full_name": "ممد ممدیان",
-        "nick_name": null,
+        "nick_name": "Default Nick Name",
         "email": "mamad@gmail.com",
         "phone": null,
         "address": null,
@@ -999,7 +1031,7 @@
         "create_at": "2022-10-02T15:39:49.847Z",
         "updated_at": "2022-10-02T15:39:49.847Z",
         "full_name": "ممد ممدیان",
-        "nick_name": null,
+        "nick_name": "Default Nick Name",
         "email": "mamad2@gmail.com",
         "phone": null,
         "address": null,
@@ -1022,7 +1054,7 @@
         "create_at": "2022-10-03T06:34:24.292Z",
         "updated_at": "2022-10-03T19:00:18.094Z",
         "full_name": "ممد ممدیان",
-        "nick_name": null,
+        "nick_name": "Default Nick Name",
         "email": "mamad3@gmail.com",
         "phone": null,
         "address": null,
@@ -1093,6 +1125,29 @@
         "full_name": "hasan",
         "nick_name": "hasan",
         "email": "superhasan@gmail.com",
+        "phone": null,
+        "address": null,
+        "avatar": "",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "accounts.customuser",
+    "pk": 14,
+    "fields": {
+        "password": "pbkdf2_sha256$260000$eGool8Ij1E3Kv5ZrfEhLjw$y+VW0LbqzPNwNb1nOtazvFKSP4AW+bOy63zPTeE5cM0=",
+        "last_login": "2023-12-23T05:07:36.978Z",
+        "is_superuser": false,
+        "username": "hosijafari@example.com",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2023-12-23T05:07:36.324Z",
+        "create_at": "2023-12-23T05:07:36.661Z",
+        "updated_at": "2023-12-23T05:07:36.661Z",
+        "full_name": "حسین جعفری",
+        "nick_name": "حسین جعفری",
+        "email": "hosijafari@example.com",
         "phone": null,
         "address": null,
         "avatar": "",
@@ -1415,7 +1470,7 @@
         "address": "تهران - فرشته",
         "paid": true,
         "discount": 0,
-        "transaction_id": 3132
+        "transaction_id": "3132"
     }
 },
 {
@@ -1919,7 +1974,7 @@
         "address": "تهران - فرشته",
         "paid": false,
         "discount": 0,
-        "transaction_id": 2277
+        "transaction_id": "2277"
     }
 },
 {
@@ -1991,7 +2046,7 @@
         "address": "تهران - فرشته",
         "paid": false,
         "discount": 0,
-        "transaction_id": 105491861
+        "transaction_id": "105491861"
     }
 },
 {
@@ -2117,7 +2172,7 @@
         "address": "تهران - فرشته",
         "paid": true,
         "discount": 0,
-        "transaction_id": 220432
+        "transaction_id": "220432"
     }
 },
 {
@@ -2135,7 +2190,7 @@
         "address": "تهران - فرشته",
         "paid": true,
         "discount": 0,
-        "transaction_id": 1730529380
+        "transaction_id": "1730529380"
     }
 },
 {
@@ -2153,7 +2208,7 @@
         "address": "تهران - فرشته",
         "paid": true,
         "discount": 0,
-        "transaction_id": 2931415
+        "transaction_id": "2931415"
     }
 },
 {
@@ -2171,7 +2226,7 @@
         "address": "تهران - فرشته",
         "paid": true,
         "discount": 0,
-        "transaction_id": 378561
+        "transaction_id": "378561"
     }
 },
 {
@@ -2279,7 +2334,7 @@
         "address": "تهران - فرشته",
         "paid": true,
         "discount": 100,
-        "transaction_id": 125868
+        "transaction_id": "125868"
     }
 },
 {
@@ -2629,7 +2684,7 @@
     "pk": 69,
     "fields": {
         "create_at": "2023-11-19T10:15:09.267Z",
-        "updated_at": "2023-11-19T10:15:09.267Z",
+        "updated_at": "2023-12-05T12:19:47.477Z",
         "user": 1,
         "coupon": null,
         "transport": 3,
@@ -2693,7 +2748,7 @@
         "address": "تهران - فرشته",
         "paid": true,
         "discount": 0,
-        "transaction_id": 0
+        "transaction_id": "0"
     }
 },
 {
@@ -3720,7 +3775,7 @@
     "model": "coupons.coupon",
     "pk": 1,
     "fields": {
-        "create_at": "2023-01-27T12:59:08.000Z",
+        "create_at": "2023-01-27T12:59:08Z",
         "updated_at": "2023-02-03T15:30:06.503Z",
         "code": "1percent",
         "valid_from": "2023-01-27T12:58:51Z",

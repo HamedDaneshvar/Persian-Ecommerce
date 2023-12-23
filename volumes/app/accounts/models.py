@@ -37,14 +37,10 @@ class CustomUser(AbstractUser, GeneralModel):
     last_name = None
     full_name = models.CharField(
         max_length=128,
-        blank=True,
-        null=True,
         verbose_name=_("Full name"),
     )
     nick_name = models.CharField(
         max_length=128,
-        blank=True,
-        null=True,
         verbose_name=_("Nick name"),
     )
     email = models.EmailField(
