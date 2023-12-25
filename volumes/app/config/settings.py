@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     # third-party
     'widget_tweaks',
+    'rest_framework',
 
     # local app
     'accounts.apps.AccountsConfig',
