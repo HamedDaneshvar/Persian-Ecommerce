@@ -19,6 +19,10 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    # API urls
+    path('api-auth/', include('rest_framework.urls')),
+
+    # Traditional Django urls
     path('admin/', admin.site.urls),
     path('accounts/', include("accounts.urls", namespace="accounts")),
     path('cart/', include("cart.urls", namespace="cart")),
