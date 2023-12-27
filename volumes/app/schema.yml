@@ -1,0 +1,557 @@
+openapi: 3.0.3
+info:
+  title: Persian Ecommerce API
+  version: 1.0.0
+  description: Persian online shop
+paths:
+  /api/v1/shop/:
+    get:
+      operationId: api_v1_shop_list
+      description: |-
+        API view for listing and creating products.
+
+        Permissions:
+            - GET: Allow any user to retrieve the list of products.
+            - POST: Only admin users are allowed to create new products.
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+          description: ''
+    post:
+      operationId: api_v1_shop_create
+      description: |-
+        API view for listing and creating products.
+
+        Permissions:
+            - GET: Allow any user to retrieve the list of products.
+            - POST: Only admin users are allowed to create new products.
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Product'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+  /api/v1/shop/{id}/:
+    get:
+      operationId: api_v1_shop_retrieve
+      description: |-
+        API view for retrieving, updating, and deleting a product.
+
+        Permissions:
+            - GET: Allow any user to retrieve a product.
+            - PUT/PATCH/DELETE: Only admin users are allowed to update or delete a
+            product.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+    put:
+      operationId: api_v1_shop_update
+      description: |-
+        API view for retrieving, updating, and deleting a product.
+
+        Permissions:
+            - GET: Allow any user to retrieve a product.
+            - PUT/PATCH/DELETE: Only admin users are allowed to update or delete a
+            product.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Product'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Product'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+    patch:
+      operationId: api_v1_shop_partial_update
+      description: |-
+        API view for retrieving, updating, and deleting a product.
+
+        Permissions:
+            - GET: Allow any user to retrieve a product.
+            - PUT/PATCH/DELETE: Only admin users are allowed to update or delete a
+            product.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedProduct'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedProduct'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedProduct'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+    delete:
+      operationId: api_v1_shop_destroy
+      description: |-
+        API view for retrieving, updating, and deleting a product.
+
+        Permissions:
+            - GET: Allow any user to retrieve a product.
+            - PUT/PATCH/DELETE: Only admin users are allowed to update or delete a
+            product.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/shop/category/:
+    get:
+      operationId: api_v1_shop_category_list
+      description: |-
+        API view for listing and creating categories.
+
+        Permissions:
+            - GET: Allow any user to retrieve the list of categories.
+            - POST: Only admin users are allowed to create new categories.
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+          description: ''
+    post:
+      operationId: api_v1_shop_category_create
+      description: |-
+        API view for listing and creating categories.
+
+        Permissions:
+            - GET: Allow any user to retrieve the list of categories.
+            - POST: Only admin users are allowed to create new categories.
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Category'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Category'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+  /api/v1/shop/category/{id}/:
+    get:
+      operationId: api_v1_shop_category_retrieve
+      description: |-
+        API view for retrieving, updating, and deleting a category.
+
+        Permissions:
+            - GET: Allow any user to retrieve a category.
+            - PUT/PATCH/DELETE: Only admin users are allowed to update or delete a
+            category.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+    put:
+      operationId: api_v1_shop_category_update
+      description: |-
+        API view for retrieving, updating, and deleting a category.
+
+        Permissions:
+            - GET: Allow any user to retrieve a category.
+            - PUT/PATCH/DELETE: Only admin users are allowed to update or delete a
+            category.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Category'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Category'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+    patch:
+      operationId: api_v1_shop_category_partial_update
+      description: |-
+        API view for retrieving, updating, and deleting a category.
+
+        Permissions:
+            - GET: Allow any user to retrieve a category.
+            - PUT/PATCH/DELETE: Only admin users are allowed to update or delete a
+            category.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedCategory'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedCategory'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedCategory'
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+    delete:
+      operationId: api_v1_shop_category_destroy
+      description: |-
+        API view for retrieving, updating, and deleting a category.
+
+        Permissions:
+            - GET: Allow any user to retrieve a category.
+            - PUT/PATCH/DELETE: Only admin users are allowed to update or delete a
+            category.
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    Category:
+      type: object
+      description: |-
+        Serializer for the Category model.
+
+        Fields:
+            - url: Hyperlinked identity field for the category detail view.
+            - name: Name of the category.
+            - slug: Slug field for the category.
+
+        Excluded Fields:
+            - create_at: Excluded from serialization.
+            - updated_at: Excluded from serialization.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          format: uri
+          readOnly: true
+        name:
+          type: string
+          maxLength: 250
+        slug:
+          type: string
+          maxLength: 250
+          pattern: ^[-a-zA-Z0-9_]+$
+      required:
+      - id
+      - name
+      - slug
+      - url
+    PatchedCategory:
+      type: object
+      description: |-
+        Serializer for the Category model.
+
+        Fields:
+            - url: Hyperlinked identity field for the category detail view.
+            - name: Name of the category.
+            - slug: Slug field for the category.
+
+        Excluded Fields:
+            - create_at: Excluded from serialization.
+            - updated_at: Excluded from serialization.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          format: uri
+          readOnly: true
+        name:
+          type: string
+          maxLength: 250
+        slug:
+          type: string
+          maxLength: 250
+          pattern: ^[-a-zA-Z0-9_]+$
+    PatchedProduct:
+      type: object
+      description: |-
+        Serializer for the Product model.
+
+        Fields:
+            - url: Hyperlinked identity field for the product detail view.
+            - category: Nested serializer for the associated category.
+            - name: Name of the product.
+            - price: Price of the product.
+            - slug: Slug field for the product.
+            - image: Image field for the product.
+            - description: Description of the product.
+
+        Excluded Fields:
+            - create_at: Excluded from serialization.
+            - updated_at: Excluded from serialization.
+            - available: Excluded from serialization if the requesting user is not
+            a staff member.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          format: uri
+          readOnly: true
+        category:
+          allOf:
+          - $ref: '#/components/schemas/Category'
+          readOnly: true
+        category_id:
+          type: integer
+          writeOnly: true
+        name:
+          type: string
+          maxLength: 250
+        slug:
+          type: string
+          maxLength: 250
+          pattern: ^[-a-zA-Z0-9_]+$
+        image:
+          type: string
+          format: uri
+          nullable: true
+        description:
+          type: string
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+    Product:
+      type: object
+      description: |-
+        Serializer for the Product model.
+
+        Fields:
+            - url: Hyperlinked identity field for the product detail view.
+            - category: Nested serializer for the associated category.
+            - name: Name of the product.
+            - price: Price of the product.
+            - slug: Slug field for the product.
+            - image: Image field for the product.
+            - description: Description of the product.
+
+        Excluded Fields:
+            - create_at: Excluded from serialization.
+            - updated_at: Excluded from serialization.
+            - available: Excluded from serialization if the requesting user is not
+            a staff member.
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        url:
+          type: string
+          format: uri
+          readOnly: true
+        category:
+          allOf:
+          - $ref: '#/components/schemas/Category'
+          readOnly: true
+        category_id:
+          type: integer
+          writeOnly: true
+        name:
+          type: string
+          maxLength: 250
+        slug:
+          type: string
+          maxLength: 250
+          pattern: ^[-a-zA-Z0-9_]+$
+        image:
+          type: string
+          format: uri
+          nullable: true
+        description:
+          type: string
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,10}(?:\.\d{0,2})?$
+      required:
+      - category
+      - category_id
+      - id
+      - name
+      - price
+      - slug
+      - url
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid

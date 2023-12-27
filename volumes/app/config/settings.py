@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     # third-party
     'widget_tweaks',
     'rest_framework',
+    'drf_spectacular',
+    'drf_spectacular_sidecar',
 
     # local app
     'accounts.apps.AccountsConfig',
@@ -148,3 +150,20 @@ DEFAULT_FROM_EMAIL = "Info@localhost"
 AUTH_USER_MODEL = 'accounts.CustomUser'
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
+
+# DRF settings
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Persian Ecommerce API',
+    'DESCRIPTION': 'Persian online shop',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+
+    # use the sidecar instead use CDN
+    'SWAGGER_UI_DIST': 'SIDECAR',
+    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
+    'REDOC_DIST': 'SIDECAR',
+}
