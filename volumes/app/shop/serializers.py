@@ -36,6 +36,8 @@ class ProductSerializer(serializers.ModelSerializer):
         - slug: Slug field for the product.
         - image: Image field for the product.
         - description: Description of the product.
+        - category_id: Primary key related field for selecting an existing
+        category.
 
     Excluded Fields:
         - create_at: Excluded from serialization.
@@ -46,7 +48,14 @@ class ProductSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(
         view_name='api-shop:product-detail',
     )
-    category = CategorySerializer()
+    # Show category information when retrieving product list
+    category = CategorySerializer(read_only=True)
+    category_id = serializers.PrimaryKeyRelatedField(
+        # Allow selecting from existing categories
+        queryset=Category.objects.all(),
+        write_only=True,  # Exclude category field when retrieving product list
+        required=True  # Require category field for POST requests
+    )
 
     class Meta:
         model = Product
@@ -57,3 +66,8 @@ class ProductSerializer(serializers.ModelSerializer):
         if not self.context['request'].user.is_staff:
             fields.pop('available', None)
         return fields
+
+    def create(self, validated_data):
+        category_id = validated_data.pop('category_id')
+        validated_data['category'] = category_id
+        return super().create(validated_data)
