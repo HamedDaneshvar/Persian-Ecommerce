@@ -57,7 +57,8 @@ class ProductListViewTest(TestCase):
         self.assertFalse(response.context['product_exist'])
         self.assertEqual(
             response.context['products_description'],
-            "برای این دسته‌بندی محصولی ثبت نشده است."
+            # "برای این دسته‌بندی محصولی ثبت نشده است."
+            "این فروشگاه محصولی را ثبت نکرده است."
         )
 
     def test_product_list_grid_view(self):
