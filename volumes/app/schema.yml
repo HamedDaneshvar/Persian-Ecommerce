@@ -450,6 +450,8 @@ components:
             - slug: Slug field for the product.
             - image: Image field for the product.
             - description: Description of the product.
+            - category_id: Primary key related field for selecting an existing
+            category.
 
         Excluded Fields:
             - create_at: Excluded from serialization.
@@ -501,6 +503,8 @@ components:
             - slug: Slug field for the product.
             - image: Image field for the product.
             - description: Description of the product.
+            - category_id: Primary key related field for selecting an existing
+            category.
 
         Excluded Fields:
             - create_at: Excluded from serialization.
