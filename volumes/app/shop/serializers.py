@@ -63,11 +63,21 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def get_fields(self):
         fields = super().get_fields()
-        if not self.context['request'].user.is_staff:
+        try:
+            if not self.context['request'].user.is_staff:
+                fields.pop('available', None)
+        except AttributeError:
             fields.pop('available', None)
+
         return fields
 
     def create(self, validated_data):
         category_id = validated_data.pop('category_id')
         validated_data['category'] = category_id
         return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        category_id = validated_data.pop('category_id', None)
+        if category_id:
+            instance.category = category_id
+        return super().update(instance, validated_data)
