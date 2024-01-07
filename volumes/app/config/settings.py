@@ -154,6 +154,9 @@ LOGOUT_REDIRECT_URL = "/"
 # DRF settings
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ]
 }
 
 SPECTACULAR_SETTINGS = {
