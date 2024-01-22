@@ -1,5 +1,7 @@
 from django import forms
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth import password_validation
+from django.contrib.auth.models import Group, Permission
 from django.contrib.auth.forms import (
     UserCreationForm,
     UserChangeForm,
@@ -79,3 +81,25 @@ class ProfileForm(forms.ModelForm):
         model = CustomUser
         fields = ("nick_name", "full_name", "phone",
                   "email", "address", "avatar",)
+
+
+class GroupAdminForm(forms.ModelForm):
+    class Meta:
+        model = Group
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super(GroupAdminForm, self).__init__(*args, **kwargs)
+        # Get the ContentType for the 'allauth' and 'socialaccount' apps
+        excluded_content_types = ContentType.objects.filter(
+            app_label__in=['allauth', 'socialaccount']
+        )
+        # Get the ids of the associated Permissions
+        excluded_permissions = Permission.objects.filter(
+            content_type__in=excluded_content_types
+        ).values_list('id', flat=True)
+        # Exclude the permissions from the queryset
+        self.fields['permissions'].queryset = \
+            self.fields['permissions'].queryset.exclude(
+                id__in=excluded_permissions
+            )

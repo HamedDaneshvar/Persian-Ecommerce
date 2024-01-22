@@ -17,11 +17,18 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from dj_rest_auth.views import PasswordResetConfirmView
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 urlpatterns = [
     # API urls
+    # authentication
     path('api-auth/', include('rest_framework.urls')),
+    path('api/v1/auth/', include('accounts.api_urls', namespace='api-auth')),
+    path('api/v1/auth/password/reset/confirm/<uibd64>/<token>/',
+         PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+
+    # other app
     path('api/v1/shop/', include('shop.api_urls', namespace='api-shop')),
 
     # Traditional Django urls

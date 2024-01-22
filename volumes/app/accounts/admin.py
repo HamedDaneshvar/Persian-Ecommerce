@@ -1,8 +1,15 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import Group
+from django.contrib.auth.admin import UserAdmin, GroupAdmin as BaseGroupAdmin
+from allauth.socialaccount.models import (
+    SocialApp,
+    SocialAccount,
+    SocialToken,
+)
 from accounts.forms import (
     CustomUserCreationForm,
     CustomUserChangeForm,
+    GroupAdminForm,
 )
 from accounts.models import CustomUser
 
@@ -46,3 +53,17 @@ class CustomUserAdmin(UserAdmin):
     )
     search_fields = ('email', 'username',)
     ordering = ('date_joined', 'email',)
+
+
+class GroupAdmin(BaseGroupAdmin):
+    form = GroupAdminForm
+
+
+# unregister Social account from allauth app
+admin.site.unregister(SocialAccount)
+admin.site.unregister(SocialApp)
+admin.site.unregister(SocialToken)
+
+# Re-register Group for admin class
+admin.site.unregister(Group)
+admin.site.register(Group, GroupAdmin)

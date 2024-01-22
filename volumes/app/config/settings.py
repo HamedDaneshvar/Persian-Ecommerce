@@ -38,10 +38,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     # third-party
     'widget_tweaks',
+
     'rest_framework',
+    'rest_framework.authtoken',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
     'drf_spectacular',
     'drf_spectacular_sidecar',
 
@@ -63,6 +71,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -151,12 +160,18 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
+# Site config
+SITE_ID = 1
+
 # DRF settings
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
-    ]
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
+    ],
 }
 
 SPECTACULAR_SETTINGS = {
@@ -169,4 +184,17 @@ SPECTACULAR_SETTINGS = {
     'SWAGGER_UI_DIST': 'SIDECAR',
     'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
     'REDOC_DIST': 'SIDECAR',
+}
+
+
+# dj-rest-auth settings
+REST_AUTH = {
+    'USE_JWT': True,
+    'JWT_AUTH_COOKIE': 'persian_ecoomerce_access',
+    'JWT_AUTH_REFRESH_COOKIE': 'persian_ecoomerce_refresh',
+    'JWT_AUTH_HTTPONLY': False,
+    'LOGIN_SERIALIZER': 'accounts.serializers.CustomLoginSerializer',
+    'REGISTER_SERIALIZER': 'accounts.serializers.CustomRegisterSerializer',
+    'USER_DETAILS_SERIALIZER': 'accounts.serializers.CustomUserDetailsSerializer',
+    'PASSWORD_CHANGE_SERIALIZER': 'accounts.serializers.CustomPasswordChangeSerializer',
 }
