@@ -87,3 +87,38 @@ docker-compose up --build
 ```sh
 python3 manage.py loaddata fixtures/sampledata.json && \
 ```
+
+## نکات استفاده از mysql به جای postgres
+برای استفاده از mysql به جای postgres حتما نیاز است که هنگام مشخص کردن کانفیگ های متصل شدن به دیتابیس، کانفیگ زیر نیز در تنظیمات اضافه شود.
+```python
+DATABASES = {
+    'default': {
+        ...
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+            'init_command': "SET collation_connection = utf8mb4_unicode_ci"
+        },
+    }
+}
+```
+و بعد از اضافه کردن این تنظیمات در صورتی که خواستیم از داده های نمونه که در دایرکتوری fixture وجود دارد استفاده کنیم باید مراحل زیر را نیز طی کنیم تا بتوانیم از خطای MySQLdb.IntegrityError جلوگیری کنیم.
+
+در مرحله اول کافیست بعد از مشخص کردن کانفیگ های بالا عملیات ماگریشن را با دستور زیر انجام دهیم.
+```sh
+python manage.py migrate
+```
+
+و بعد از این کار لازم است بعضی از ردیف های جداول دیتابیس حذف شود تا تداخلی با فایل داده های نمونه پیدا نکند(لازم به ذکر است اگر نمیخواهید از داده های نمونه استفاده کنید نیازی به انجام این مراحل ندارید) دستورهای زیر را در شل mysql وارد کنید و آن را اجرا کنید.
+
+```sql
+SET FOREIGN_KEY_CHECKS=0;
+delete from auth_permission;
+delete from django_content_type;
+SET FOREIGN_KEY_CHECKS=1;
+```
+
+و در نهایت وقتی این کار را انجام دادید و دستورات بالا را اجرا کردید کافیست دستور loaddata را استفاده کنید و داده های نمونه خود را به دیتابیس mysql وارد کنید.
+
+```sh
+python manage.py loaddata 'path/of/your/sample/data.json'
+```
