@@ -133,7 +133,7 @@
 					{% endif %}
 				{% endwith %}
 				<a class="nav-link" href="{% url 'cart:cart_detail' %}"><i class="lni lni-shopping-basket"></i>سبد خرید</a></li>
-            <li class="nav-item"><a class="nav-link " href="#"><i class="lni lni-heart"></i>علاقمندی‌ها</a></li>
+            <li class="nav-item"><a class="nav-link " href="{% url 'accounts:user_wishlist' %}"><i class="lni lni-heart"></i>علاقمندی‌ها</a></li>
             <li class="nav-item"><a class="nav-link " href="{% url 'accounts:profile' %}"><i class="lni lni-user"></i>پروفایل</a></li>
 		  </ul>
         </div>

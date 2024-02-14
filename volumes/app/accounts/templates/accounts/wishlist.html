@@ -3,11 +3,7 @@
 
 {% block title %}
 {% block header-title %}
-{% if category %}
-	{{category.name}}
-{% else %}
-	لیست محصولات
-{% endif %}
+    لیست علاقه مندیها
 {% endblock header-title %}
 {% endblock title %}
 
@@ -187,13 +183,7 @@
 <div class="top-products-area py-3">
 	<div class="container">
 	<div class="section-heading d-flex align-items-center justify-content-between">
-		<h6 class="ml-1"> 
-		{% if category %}
-			{{category.name}}
-		{% else %}
-			همه محصولات
-		{% endif %}
-		</h6>
+		<h6 class="ml-1">لیست محصولات دلخواه شما</h6>
 		<!-- Layout Options-->
 		<div class="layout-options">
 			<a {% if grid %}class="active"{% endif %} href="?style=grid"><i class="lni lni-grid-alt"></i></a>
@@ -201,21 +191,6 @@
 		</div>
 	</div>
 		
-	<div class="product-catagories">
-		<div class="row g-3">
-			{% if category %}
-				<!-- Single Catagory-->
-				<div class="col-4 mx-auto"><a class="shadow-sm" href="{{ category.get_absolute_url }}"><img src="" alt="">{{ category.name }}</a></div>
-			{% else %}
-				<div class="owl-carousel owl-theme">
-					{% for category in categories %}
-					<!-- Single Catagory-->
-					<div class="item justify-content-center"><a class="shadow-sm" href="{{ category.get_absolute_url }}"><img src="" alt="">{{ category.name }}</a></div>
-					{% endfor %}
-				</div>
-			{% endif %}
-		</div>
-	</div>
 	<div class="row g-3">
 		
 		{% if product_exist %}
@@ -224,7 +199,7 @@
 				<!-- Single Top Product Card - gridview-->
 				<div class="col-6 col-md-4 col-lg-3">
 					<div class="card top-product-card">
-						<div class="card-body"><span class="badge badge-success">فروش</span><a class="wishlist-btn" href="{% url 'accounts:add_remove_wishlist' product.id %}">{% if user.is_authenticated and product.id in wishlist_products %}<i class="lni lni-heart-filled"></i>{% else %}<i class="lni lni-heart"></i>{% endif %}</a><a class="product-thumbnail d-block" href="{{ product.get_absolute_url }}"><img class="mb-2" src="{% if product.image %} {{ product.image.url }} {% else %} {% static 'front/img/nopic.jpg' %} {% endif %}" alt=""></a><a class="product-title d-block" href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+						<div class="card-body"><span class="badge badge-success">فروش</span><a class="wishlist-btn" href="{% url 'accounts:add_remove_wishlist' product.id %}"><i class="lni lni-heart-filled"></i></a><a class="product-thumbnail d-block" href="{{ product.get_absolute_url }}"><img class="mb-2" src="{% if product.image %} {{ product.image.url }} {% else %} {% static 'front/img/nopic.jpg' %} {% endif %}" alt=""></a><a class="product-title d-block" href="{{ product.get_absolute_url }}">{{ product.name }}</a>
 						<p class="sale-price">{{ product.price|floatformat:-2 }} تومان</p>
 						<div class="product-rating"><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i></div><a class="btn btn-success btn-sm add2cart-notify" onclick="document.getElementById('{{ product.id }}').submit()" href="#"><i class="lni lni-plus"></i></a>
 						
@@ -244,7 +219,7 @@
 				<div class="col-12 col-md-6">
 					<div class="card weekly-product-card">
 					<div class="card-body d-flex align-items-center">
-						<div class="product-thumbnail-side"><span class="badge badge-success">فروش</span><a class="wishlist-btn" href="{% url 'accounts:add_remove_wishlist' product.id %}">{% if user.is_authenticated and product.id in wishlist_products %}<i class="lni lni-heart-filled"></i>{% else %}<i class="lni lni-heart"></i>{% endif %}</a><a class="product-thumbnail d-block" href="{{ product.get_absolute_url }}"><img src="{% if product.image %} {{ product.image.url }} {% else %} {% static 'front/img/nopic.jpg' %} {% endif %}" alt=""></a></div>
+						<div class="product-thumbnail-side"><span class="badge badge-success">فروش</span><a class="wishlist-btn" href="{% url 'accounts:add_remove_wishlist' product.id %}"><i class="lni lni-heart-filled"></i></a><a class="product-thumbnail d-block" href="{{ product.get_absolute_url }}"><img src="{% if product.image %} {{ product.image.url }} {% else %} {% static 'front/img/nopic.jpg' %} {% endif %}" alt=""></a></div>
 						<div class="product-description"><a class="product-title d-block" href="{{ product.get_absolute_url }}">{{ product.name }}</a>
 						<p class="sale-price"><i class="lni lni-dollar"></i>{{ product.price|floatformat:-2 }} تومان</p>
 						<div class="product-rating"><i class="lni lni-star-filled"></i>4.88 (39)</div><a class="btn btn-success btn-sm add2cart-notify" onclick="document.getElementById('{{ product.id }}').submit()" href="#"><i class="mr-1 lni lni-cart"></i>خرید</a>
@@ -263,6 +238,11 @@
 		{% else %}
 			<h4 class="mt-5 text-center">{{ products_description }}</h4>
 		{% endif %}
+
+        {% comment %} <!-- Select All Products-->
+        <div class="col-12">
+            <div class="select-all-products-btn"><a class="btn btn-danger w-100" href="#">افزودن همه به سبد خرید</a></div>
+        </div> {% endcomment %}
 	</div>
 	</div>
 </div>
@@ -271,30 +251,4 @@
 
 
 {% block domready %}
-<script>
-	$('.owl-carousel').owlCarousel({
-		loop:true,
-		rtl:true,
-		margin:10,
-		responsiveClass:false,
-		responsive:{
-			0:{
-				items:1,
-				nav:false,
-			},
-			480:{
-				items:2,
-				nav:false,
-			},
-			768:{
-				items:3,
-				nav:false,
-			},
-		}
-	})
-
-	$(document).ready(function(){
-		$(".owl-carousel").owlCarousel();
-	});
-</script>
 {% endblock domready %}

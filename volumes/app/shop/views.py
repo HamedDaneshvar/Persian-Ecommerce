@@ -27,6 +27,12 @@ def product_list(request, category_slug=None):
     products_description = ""
     categories = Category.objects.all()
     products = Product.objects.filter(available=True,)
+    wishlist_products = []
+    if request.user.is_authenticated:
+        user = request.user
+        wishlist_products = user.user_wishlist.filter(available=True)\
+            .values_list('id', flat=True)
+
     if len(products) == 0:
         product_exist = False
         products_description = "این فروشگاه محصولی را ثبت نکرده است."
@@ -61,6 +67,7 @@ def product_list(request, category_slug=None):
             'products_description': products_description,
             'grid': grid,
             'cart_product_form': cart_product_form,
+            'wishlist_products': wishlist_products,
         }
     )
 
@@ -85,6 +92,11 @@ def product_detail(request, id, slug):
         available=True,
     )
 
+    wishlist_product = []
+    if request.user.is_authenticated:
+        user = request.user
+        wishlist_product = user.user_wishlist.filter(available=True, id=id)
+
     cart_product_form = CartAddProductForm()
 
     return render(
@@ -93,5 +105,6 @@ def product_detail(request, id, slug):
         context={
             'product': product,
             'cart_product_form': cart_product_form,
+            'wishlist_product': wishlist_product,
         }
     )

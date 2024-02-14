@@ -8,6 +8,10 @@ urlpatterns = [
     path("signup/", views.signup, name="signup"),
     path("profile/", views.profile, name="profile"),
     path("profile/edit/", views.edit_profile, name="edit_profile"),
+    path('profile/wishlist/', views.user_wishlist, name="user_wishlist"),
+    path("profile/wishlist/add_remove_product/<int:id>/",
+         views.add_remove_wishlist,
+         name="add_remove_wishlist"),
 
     # default django url view
     path("login/", auth_view.LoginView.as_view(

@@ -22,7 +22,7 @@
 		<h6 class="mb-1">{{ prpduct.name }}</h6>
 		<p class="sale-price mb-0">{{ product.price|floatformat:-2 }} تومان</p>
 		</div>
-		<div class="p-wishlist-share"><a href="#"><i class="lni lni-heart"></i></a></div>
+		<div class="p-wishlist-share"><a href="{% url 'accounts:add_remove_wishlist' product.id %}">{% if user.is_authenticated and wishlist_product %}<i class="lni lni-heart-filled"></i>{% else %}<i class="lni lni-heart"></i>{% endif %}</a></div>
 	</div>
 	<!-- Ratings-->
 	<div class="product-ratings">
