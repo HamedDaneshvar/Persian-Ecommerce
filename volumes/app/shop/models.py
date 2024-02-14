@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.utils.translation import gettext as _
 from utils.general_model import GeneralModel
@@ -72,6 +73,10 @@ class Product(GeneralModel):
     available = models.BooleanField(
         default=True,
         verbose_name=_("Available"),)
+    users_wishlist = models.ManyToManyField(
+        get_user_model(),
+        related_name="user_wishlist",
+        blank=True,)
 
     class Meta:
         ordering = ["name"]
