@@ -98,7 +98,7 @@ def product_detail(request, id, slug):
         user = request.user
         wishlist_product = user.user_wishlist.filter(available=True, id=id)
 
-    reviews = product.reviews.all()
+    reviews = product.reviews.filter(status='A')
     reviews_avg = f"{(sum(reviews.values_list('rate', flat=True)) / len(reviews)):.1f}"
     filled_stars = int(float(reviews_avg))
     unfilled_stars = 5 - filled_stars
