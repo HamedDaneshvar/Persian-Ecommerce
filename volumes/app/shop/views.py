@@ -100,7 +100,11 @@ def product_detail(request, id, slug):
         wishlist_product = user.user_wishlist.filter(available=True, id=id)
 
     reviews = product.reviews.filter(status='A')
-    reviews_avg = f"{(sum(reviews.values_list('rate', flat=True)) / len(reviews)):.1f}"
+    try:
+        reviews_avg = f"{(sum(reviews.values_list('rate', flat=True)) / len(reviews)):.1f}"
+    except ZeroDivisionError:
+        reviews_avg = 0
+
     filled_stars = int(float(reviews_avg))
     unfilled_stars = 5 - filled_stars
 
