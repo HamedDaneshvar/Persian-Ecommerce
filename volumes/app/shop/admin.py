@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import (
     Category,
     Product,
+    Product_Image,
 )
 
 
@@ -29,3 +30,8 @@ class ProductAdmin(admin.ModelAdmin):
     list_editable = ["price", "available",]
     # Automatically populate the slug field based on the name
     prepopulated_fields = {"slug": ("name",), }
+
+
+@admin.register(Product_Image)
+class ProductImageAdmin(admin.ModelAdmin):
+    list_display = ["get_product_name", "create_at", "updated_at",]

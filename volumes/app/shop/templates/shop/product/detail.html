@@ -14,7 +14,17 @@
 <!-- Product Slides-->
 <div class="product-slides owl-carousel">
 	<!-- Single Hero Slide-->
-	<div class="single-product-slide" style="background-image: url({% if product.image %} {{ product.image.url }} {% else %} {% static 'front/img/nopic.jpg' %} {% endif %})"></div>
+	{% if not product.image and not product_images %}
+		<div class="single-product-slide" style="background-image: url({% static 'front/img/nopic.jpg' %})"></div>
+	{% else %}
+		{% if product.image %}<div class="single-product-slide" style="background-image: url({{ product.image.url }})"></div>{% endif %}
+
+		{% if product_images %}
+			{% for images in product_images %}
+			<div class="single-product-slide" style="background-image: url({{ images.image.url }})"></div>
+			{% endfor %}
+		{% endif %}
+	{% endif %}
 </div>
 <div class="product-description pb-3">
 	<!-- Product Title & Meta Data-->
@@ -30,16 +40,22 @@
 	<div class="product-ratings">
 		<div class="container d-flex align-items-center justify-content-between">
 		<div class="ratings">
-			{% for _ in filled_stars %}
-			<i class="lni lni-star-filled m-0"></i>
-			{% endfor %}
-			{% for _ in unfilled_stars %}
-			<i class="lni lni-star m-0"></i>
-			{% endfor %}
+			{% if reviews|length == 0 %}
+			<i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i>
+			{% else %}
+				{% for _ in filled_stars %}
+				<i class="lni lni-star-filled m-0"></i>
+				{% endfor %}
+				{% for _ in unfilled_stars %}
+				<i class="lni lni-star m-0"></i>
+				{% endfor %}
+			{% endif %}
 			<span class="pl-1">{{ reviews|length }} رتبه</span>
 		</div>
 		<div class="total-result-of-ratings"><span>{{ reviews_avg }}</span>
-			{% if reviews_avg <= 1 %}
+			{% if reviews|length == 0 %}
+			<span>بدون امتیاز</span>
+			{% elif reviews_avg <= 1 %}
 			<span>خیلی بد</span>
 			{% elif 1 < reviews_avg <= 2 %}
 			<span>بد</span>

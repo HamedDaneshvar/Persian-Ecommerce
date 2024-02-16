@@ -92,6 +92,7 @@ def product_detail(request, id, slug):
         slug=slug,
         available=True,
     )
+    product_images = product.images.all()
 
     wishlist_product = []
     if request.user.is_authenticated:
@@ -111,6 +112,7 @@ def product_detail(request, id, slug):
         template_name='shop/product/detail.html',
         context={
             'product': product,
+            'product_images': product_images,
             'cart_product_form': cart_product_form,
             'review_form': review_form,
             'wishlist_product': wishlist_product,

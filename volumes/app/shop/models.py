@@ -99,3 +99,25 @@ class Product(GeneralModel):
         """
 
         return reverse('shop:product_detail', args=[self.id, self.slug,])
+
+
+class Product_Image(GeneralModel):
+    image = models.ImageField(
+        upload_to="products/%Y/%m/%d",
+        verbose_name=_("Image"),)
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name="images",
+        verbose_name=_("Product"))
+
+    class Meta:
+        verbose_name = _("Product Image")
+        verbose_name_plural = _("Product Images")
+
+    def __str__(self):
+        return self.product.name + " Image"
+
+    def get_product_name(self):
+        return self.product.name
+    get_product_name.short_description = _("Product Name")
