@@ -1,5 +1,7 @@
 {% extends 'shop/shop-base.html' %}
 {% load static %}
+{% load rate_utils %}
+{% load jalali_tags %}
 
 {% block title %}
 {% block header-title %}
@@ -27,8 +29,28 @@
 	<!-- Ratings-->
 	<div class="product-ratings">
 		<div class="container d-flex align-items-center justify-content-between">
-		<div class="ratings"><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><span class="pl-1">3 رتبه</span></div>
-		<div class="total-result-of-ratings"><span>5.0 </span><span>خیلی خوب                                </span></div>
+		<div class="ratings">
+			{% for _ in filled_stars %}
+			<i class="lni lni-star-filled m-0"></i>
+			{% endfor %}
+			{% for _ in unfilled_stars %}
+			<i class="lni lni-star m-0"></i>
+			{% endfor %}
+			<span class="pl-1">{{ reviews|length }} رتبه</span>
+		</div>
+		<div class="total-result-of-ratings"><span>{{ reviews_avg }}</span>
+			{% if reviews_avg <= 1 %}
+			<span>خیلی بد</span>
+			{% elif 1 < reviews_avg <= 2 %}
+			<span>بد</span>
+			{% elif 2 < reviews_avg <= 3 %}
+			<span>خوب</span>
+			{% elif 3 < reviews_avg <= 4 %}
+			<span>خیلی خوب</span>
+			{% elif reviews_avg > 4 %}
+			<span>عالی</span>
+			{% endif %}
+		</div>
 		</div>
 	</div>
 	</div>
@@ -137,30 +159,28 @@
 	<!-- Rating & Review Wrapper-->
 	<div class="rating-and-review-wrapper bg-white py-3 mb-3">
 	<div class="container">
-		<h6>رتبه بندی ها ونظر ها</h6>
+		<h6>رتبه بندی‌ها و دیدگاه‌ها</h6>
 		<div class="rating-review-content">
 		<ul class="pl-0">
+			
+			{% for review in reviews %}
 			<li class="single-user-review d-flex">
-			<div class="user-thumbnail"><img src="{% static 'front/img/bg-img/7.jpg' %}" alt=""></div>
-			<div class="rating-comment">
-				<div class="rating"><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i></div>
-				<p class="comment mb-0">محصولی بسیار خوب این فقط شگفت انگیز است!</p><span class="name-date">طراحی جهان12 تیر 1399</span>
-			</div>
+				<div class="user-thumbnail"><img src="{% if review.user.avatar %} {{ review.user.avatar.url }} {% else %} {% static 'front/img/user-profile.png' %} {% endif %}" alt=""></div>
+				<div class="rating-comment">
+					<div class="rating">
+						{% for x in ""|ljust:review.rate %}
+						<i class="lni lni-star-filled m-0"></i>
+						{% endfor %}
+						{% with unfilled_stars=review.rate|minus:"5"  %}
+							{% for x in ""|ljust:unfilled_stars %}
+							<i class="lni lni-star m-0"></i>
+							{% endfor %}
+						{% endwith %}
+					</div>
+					<p class="comment mb-0">{{ review.comment }}</p><span class="name-date">{{ review.user.full_name }} {{ review.create_at|to_jalali:'%d %B %Y' }}</span>
+				</div>
 			</li>
-			<li class="single-user-review d-flex">
-			<div class="user-thumbnail"><img src="{% static 'front/img/bg-img/8.jpg' %}" alt=""></div>
-			<div class="rating-comment">
-				<div class="rating"><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i></div>
-				<p class="comment mb-0">اوه محصول عالی. دوستش دارم.</p><span class="name-date">طراحی جهان 12 تیر 1399</span>
-			</div>
-			</li>
-			<li class="single-user-review d-flex">
-			<div class="user-thumbnail"><img src="{% static 'front/img/bg-img/9.jpg' %}" alt=""></div>
-			<div class="rating-comment">
-				<div class="rating"><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i></div>
-				<p class="comment mb-0">چه محصول خوبی است من دنبالش هستم</p><span class="name-date">طراحی جهان 12 تیر 1399</span>
-			</div>
-			</li>
+			{% endfor %}
 		</ul>
 		</div>
 	</div>
@@ -168,23 +188,35 @@
 	<!-- Ratings Submit Form-->
 	<div class="ratings-submit-form bg-white py-3">
 	<div class="container">
-		<h6>ارسال نظر</h6>
-		<form action="#" method="">
+		{% if user.is_authenticated %}
+		<h6>ارسال دیدگاه</h6>
+		<form action="{% url 'reviews:create_review' product.id %}" method="post">
 		<div class="stars mb-3">
-			<input class="star-1" type="radio" name="star" id="star1">
+			<input class="star-1" value="1" type="radio" name="rate" id="star1">
 			<label class="star-1" for="star1"></label>
-			<input class="star-2" type="radio" name="star" id="star2">
+			<input class="star-2" value="2" type="radio" name="rate" id="star2">
 			<label class="star-2" for="star2"></label>
-			<input class="star-3" type="radio" name="star" id="star3">
+			<input class="star-3" value="3" type="radio" name="rate" id="star3">
 			<label class="star-3" for="star3"></label>
-			<input class="star-4" type="radio" name="star" id="star4">
+			<input class="star-4" value="4" type="radio" name="rate" id="star4">
 			<label class="star-4" for="star4"></label>
-			<input class="star-5" type="radio" name="star" id="star5">
+			<input class="star-5" value="5" type="radio" name="rate" id="star5">
 			<label class="star-5" for="star5"></label><span></span>
 		</div>
-		<textarea class="form-control mb-3" id="comments" name="comment" cols="30" rows="10" data-max-length="200" placeholder="نظرخود را بنویسید ..."></textarea>
-		<button class="btn btn-sm btn-primary" type="submit">نظررا ذخیره کنید</button>
+		{{ review_form.comment }}
+		{% csrf_token %}
+		<button class="btn btn-sm btn-primary" type="submit">ثبت دیدگاه</button>
 		</form>
+		{% else %}
+		<h6>ارسال دیدگاه</h6>
+		<div class="text-center">
+			<div>برای ثبت دیدگاه ابتدا باید وارد حساب کاربری خود شوید</div>
+			<div class="m-2">
+			  <a class="btn btn-primary m-1" href="{% url 'accounts:login' %}" title="ورود به حساب کاربری" target="_blank">ورود</a>
+			  <a class="btn btn-secondary " href="{% url 'accounts:signup' %}" title="عضویت در سایت" target="_blank">ثبت نام</a>
+			</div>
+		</div>
+		{% endif %}
 	</div>
 	</div>
 </div>

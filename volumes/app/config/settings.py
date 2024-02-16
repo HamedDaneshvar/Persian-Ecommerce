@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     # third-party
     'widget_tweaks',
+    'jalali_date',
 
     'rest_framework',
     'rest_framework.authtoken',
@@ -61,6 +62,7 @@ INSTALLED_APPS = [
     'coupons.apps.CouponsConfig',
     'transportation.apps.TransportationConfig',
     'payments.apps.PaymentsConfig',
+    'reviews.apps.ReviewsConfig',
 ]
 
 MIDDLEWARE = [

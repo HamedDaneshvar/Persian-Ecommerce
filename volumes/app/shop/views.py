@@ -3,6 +3,7 @@ from django.shortcuts import (
     get_object_or_404,
 )
 from cart.forms import CartAddProductForm
+from reviews.forms import ReviewForm
 from shop.models import (
     Category,
     Product,
@@ -97,7 +98,13 @@ def product_detail(request, id, slug):
         user = request.user
         wishlist_product = user.user_wishlist.filter(available=True, id=id)
 
+    reviews = product.reviews.all()
+    reviews_avg = f"{(sum(reviews.values_list('rate', flat=True)) / len(reviews)):.1f}"
+    filled_stars = int(float(reviews_avg))
+    unfilled_stars = 5 - filled_stars
+
     cart_product_form = CartAddProductForm()
+    review_form = ReviewForm(auto_id=False,)
 
     return render(
         request=request,
@@ -105,6 +112,11 @@ def product_detail(request, id, slug):
         context={
             'product': product,
             'cart_product_form': cart_product_form,
+            'review_form': review_form,
             'wishlist_product': wishlist_product,
+            'reviews': reviews,
+            'reviews_avg': reviews_avg,
+            'filled_stars': range(filled_stars),
+            'unfilled_stars': range(unfilled_stars),
         }
     )
