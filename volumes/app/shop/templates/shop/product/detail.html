@@ -32,7 +32,7 @@
 	<div class="container d-flex justify-content-between">
 		<div class="p-title-price">
 		<h6 class="mb-1">{{ prpduct.name }}</h6>
-		<p class="sale-price mb-0">{{ product.price|floatformat:-2 }} تومان</p>
+		<p class="sale-price mb-0">{{ product.price|floatformat:-2}} تومان</p>
 		</div>
 		<div class="p-wishlist-share"><a href="{% url 'accounts:add_remove_wishlist' product.id %}">{% if user.is_authenticated and wishlist_product %}<i class="lni lni-heart-filled"></i>{% else %}<i class="lni lni-heart"></i>{% endif %}</a></div>
 	</div>
@@ -98,55 +98,55 @@
 	</div>
 	<!-- Selection Panel-->
 	<div class="selection-panel bg-white mb-3 py-3">
-	<div class="container d-flex align-items-center justify-content-between">
-		<!-- Choose Color-->
-		<div class="choose-color-wrapper">
-		<p class="mb-1 font-weight-bold">رنگ</p>
-		<div class="choose-color-radio d-flex align-items-center">
-			<!-- Single Radio Input-->
-			<div class="form-check mb-0">
-			<input class="form-check-input blue" id="colorRadio1" type="radio" name="colorRadio" checked="">
-			<label class="form-check-label" for="colorRadio1"></label>
+		<div class="container d-flex align-items-center justify-content-between">
+			<!-- Choose Color-->
+			<div class="choose-color-wrapper">
+			<p class="mb-1 font-weight-bold">رنگ</p>
+			<div class="choose-color-radio d-flex align-items-center">
+				<!-- Single Radio Input-->
+				<div class="form-check mb-0">
+				<input class="form-check-input blue" id="colorRadio1" type="radio" name="colorRadio" checked="">
+				<label class="form-check-label" for="colorRadio1"></label>
+				</div>
+				<!-- Single Radio Input-->
+				<div class="form-check mb-0">
+				<input class="form-check-input yellow" id="colorRadio2" type="radio" name="colorRadio">
+				<label class="form-check-label" for="colorRadio2"></label>
+				</div>
+				<!-- Single Radio Input-->
+				<div class="form-check mb-0">
+				<input class="form-check-input green" id="colorRadio3" type="radio" name="colorRadio">
+				<label class="form-check-label" for="colorRadio3"></label>
+				</div>
+				<!-- Single Radio Input-->
+				<div class="form-check mb-0">
+				<input class="form-check-input purple" id="colorRadio4" type="radio" name="colorRadio">
+				<label class="form-check-label" for="colorRadio4"></label>
+				</div>
 			</div>
-			<!-- Single Radio Input-->
-			<div class="form-check mb-0">
-			<input class="form-check-input yellow" id="colorRadio2" type="radio" name="colorRadio">
-			<label class="form-check-label" for="colorRadio2"></label>
 			</div>
-			<!-- Single Radio Input-->
-			<div class="form-check mb-0">
-			<input class="form-check-input green" id="colorRadio3" type="radio" name="colorRadio">
-			<label class="form-check-label" for="colorRadio3"></label>
+			<!-- Choose Size-->
+			<div class="choose-size-wrapper text-left">
+			<p class="mb-1 font-weight-bold">اندازه</p>
+			<div class="choose-size-radio d-flex align-items-center">
+				<!-- Single Radio Input-->
+				<div class="form-check mb-0 mr-2">
+				<input class="form-check-input" id="sizeRadio1" type="radio" name="sizeRadio">
+				<label class="form-check-label" for="sizeRadio1">س</label>
+				</div>
+				<!-- Single Radio Input-->
+				<div class="form-check mb-0 mr-2">
+				<input class="form-check-input" id="sizeRadio2" type="radio" name="sizeRadio" checked="">
+				<label class="form-check-label" for="sizeRadio2">م</label>
+				</div>
+				<!-- Single Radio Input-->
+				<div class="form-check mb-0">
+				<input class="form-check-input" id="sizeRadio3" type="radio" name="sizeRadio">
+				<label class="form-check-label" for="sizeRadio3">ل</label>
+				</div>
 			</div>
-			<!-- Single Radio Input-->
-			<div class="form-check mb-0">
-			<input class="form-check-input purple" id="colorRadio4" type="radio" name="colorRadio">
-			<label class="form-check-label" for="colorRadio4"></label>
 			</div>
 		</div>
-		</div>
-		<!-- Choose Size-->
-		<div class="choose-size-wrapper text-left">
-		<p class="mb-1 font-weight-bold">اندازه</p>
-		<div class="choose-size-radio d-flex align-items-center">
-			<!-- Single Radio Input-->
-			<div class="form-check mb-0 mr-2">
-			<input class="form-check-input" id="sizeRadio1" type="radio" name="sizeRadio">
-			<label class="form-check-label" for="sizeRadio1">س</label>
-			</div>
-			<!-- Single Radio Input-->
-			<div class="form-check mb-0 mr-2">
-			<input class="form-check-input" id="sizeRadio2" type="radio" name="sizeRadio" checked="">
-			<label class="form-check-label" for="sizeRadio2">م</label>
-			</div>
-			<!-- Single Radio Input-->
-			<div class="form-check mb-0">
-			<input class="form-check-input" id="sizeRadio3" type="radio" name="sizeRadio">
-			<label class="form-check-label" for="sizeRadio3">ل</label>
-			</div>
-		</div>
-		</div>
-	</div>
 	</div>
 	<!-- Add To Cart-->
 	<div class="cart-form-wrapper bg-white mb-3 py-3">
@@ -177,8 +177,8 @@
 	<div class="container">
 		<h6>رتبه بندی‌ها و دیدگاه‌ها</h6>
 		<div class="rating-review-content">
+		{% if reviews %}
 		<ul class="pl-0">
-			
 			{% for review in reviews %}
 			<li class="single-user-review d-flex">
 				<div class="user-thumbnail"><img src="{% if review.user.avatar %} {{ review.user.avatar.url }} {% else %} {% static 'front/img/user-profile.png' %} {% endif %}" alt=""></div>
@@ -198,6 +198,11 @@
 			</li>
 			{% endfor %}
 		</ul>
+		{% else %}
+		<div class="text-center">
+			<div>برای این محصول دیدگاهی ثبت نشده است.</div>
+		</div>
+		{% endif %}
 		</div>
 	</div>
 	</div>
