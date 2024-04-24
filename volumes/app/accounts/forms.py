@@ -80,7 +80,15 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ("nick_name", "full_name", "phone",
-                  "email", "address", "avatar",)
+                  "email", "address",)
+
+
+class ChangeAvatarForm(forms.ModelForm):
+    avatar = forms.FileField(widget=forms.FileInput())
+
+    class Meta:
+        model = CustomUser
+        fields = ("avatar",)
 
 
 class GroupAdminForm(forms.ModelForm):

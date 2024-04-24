@@ -39,28 +39,43 @@
 				{% endfor %}
 			</div>
 		{% endif %}
-		<form method="post" enctype="multipart/form-data">
-			<!-- User Information-->
-			<div class="card user-info-card">
+		<!-- User Information-->
+		<div class="card user-info-card">
 			<div class="card-body p-4 d-flex align-items-center">
 				<div class="user-profile mr-3">
 					{% if user.avatar %}
-					<img src="{{ user.avatar.url }}" alt="">
+					<img id="avatar" src="{{ user.avatar.url }}" alt="">
 					{% else %}
-					<img src="{% static 'front/img/user-profile.png' %}" alt="">
+					<img id="avatar" src="{% static 'front/img/user-profile.png' %}" alt="">
 					{% endif %}
-				<div class="change-user-thumb">
-					{% render_field form.avatar class+="form-control-file" %}
-					<button><i class="lni lni-pencil"></i></button>
-				</div>
+					<form method="post" action="{% url 'accounts:change_avatar' %}" id="change_avatar_form" enctype="multipart/form-data">
+						{% csrf_token %}
+						<div class="change-user-thumb">
+							{% render_field change_avatar_form.avatar class+="form-control-file" %}
+							<button><i class="lni lni-pencil"></i></button>
+						</div>
+					</form>
 				</div>
 				<div class="user-info">
 				{% comment %} <p class="mb-0 text-white">design-world @</p> {% endcomment %}
 				<h5 class="mb-0">{% if request.user.nick_name %}{{ request.user.nick_name }}{% else %} - {% endif %}</h5>
 				</div>
 			</div>
+			<div id="success-avatar-alert" class="alert alert-success position-fixed m-2 d-none" style="z-index:9999;" role="alert">
+				<button id="success-close-alert" type="button" class="close mr-2" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<p class="d-inline">عکس پروفایل شما با موفقیت ویرایش شد!</p>
 			</div>
-			<!-- User Meta Data-->
+			<div id="fail-avatar-alert" class="alert alert-danger position-fixed m-2 d-none" style="z-index:9999;" role="alert">
+				<button id="fail-close-alert" type="button" class="close mr-2" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<p class="d-inline">ویرایش عکس پروفایل شما با خطا مواجه شد!</p>
+			</div>
+		</div>
+		<!-- User Meta Data-->
+		<form method="post">
 			<div class="card user-data-card">
 			<div class="card-body">
 				<div class="mb-3">
@@ -117,3 +132,41 @@
 	</div>
 </div>
 {% endblock content %}
+
+
+{% block domready %}
+<script>
+$('#id_avatar').change(function(){
+	var form = $('#change_avatar_form')[0];
+    var formData = new FormData(form);
+
+    $.ajax({
+      url: '{% url "accounts:change_avatar" %}',
+      type: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function(data) {
+		if (data.success) {
+			$('#avatar').attr('src', data.avatar_url);
+			$('#success-avatar-alert').removeClass('d-none');
+		}
+		else {
+			$('#fail-avatar-alert').removeClass('d-none');
+		}
+      },
+      error: function(error) {
+        $('#fail-avatar-alert').removeClass('d-none');
+      }
+    });
+});
+
+$('#success-close-alert').click(function() {
+    $('#success-avatar-alert').addClass('d-none');
+});
+
+$('#fail-close-alert').click(function() {
+    $('#fail-avatar-alert').addClass('d-none');
+});
+</script>
+{% endblock domready %}

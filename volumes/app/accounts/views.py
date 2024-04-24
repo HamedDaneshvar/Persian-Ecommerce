@@ -1,4 +1,7 @@
-from django.http import HttpResponseRedirect
+from django.http import (
+    HttpResponseRedirect,
+    JsonResponse,
+)
 from django.shortcuts import (
     render,
     redirect,
@@ -14,6 +17,7 @@ from accounts.models import CustomUser
 from accounts.forms import (
     CustomUserCreationForm,
     ProfileForm,
+    ChangeAvatarForm,
 )
 from shop.models import Product
 from cart.forms import CartAddProductForm
@@ -73,10 +77,47 @@ def edit_profile(request):
             return redirect("accounts:profile")
     else:
         form = ProfileForm(instance=user)
+        change_avatar_form = ChangeAvatarForm(instance=user)
 
     return render(request,
                   "accounts/edit_profile.html",
-                  {"form": form, })
+                  {"form": form,
+                   "change_avatar_form": change_avatar_form, })
+
+
+@login_required
+def change_avatar(request):
+    """
+    View function to handle the change of user avatar.
+
+    Args:
+        request (HttpRequest): The HTTP request object.
+
+    Returns:
+        JsonResponse: A JSON response indicating the success status and the
+        new avatar URL.
+
+    Raises:
+        CustomUser.DoesNotExist: If the user does not exist.
+
+    Notes:
+        - This function is decorated with `@login_required` to ensure that the
+          user is authenticated.
+        - The function expects a POST request with a file upload field
+          containing the new avatar image.
+
+    """
+    user = CustomUser.objects.get(id=request.user.id)
+    if request.method == "POST" and request.FILES:
+        form = ChangeAvatarForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            user = CustomUser.objects.get(id=request.user.id)
+            avatar_url = user.avatar.url
+            return JsonResponse({'success': True,
+                                 'avatar_url': avatar_url, })
+
+    return JsonResponse({'success': False})
 
 
 @login_required
