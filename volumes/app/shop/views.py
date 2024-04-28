@@ -8,6 +8,14 @@ from shop.models import (
     Category,
     Product,
 )
+from website.models import Slider
+
+
+def index(request):
+    slides = Slider.objects.filter(status=True)
+    return render(request,
+                  "shop/index.html",
+                  {"slides": slides, })
 
 
 def product_list(request, category_slug=None):

@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'transportation.apps.TransportationConfig',
     'payments.apps.PaymentsConfig',
     'reviews.apps.ReviewsConfig',
+    'website.apps.WebsiteConfig',
 ]
 
 MIDDLEWARE = [
