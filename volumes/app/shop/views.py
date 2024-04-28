@@ -13,9 +13,11 @@ from website.models import Slider
 
 def index(request):
     slides = Slider.objects.filter(status=True)
+    categories = Category.objects.all()
     return render(request,
                   "shop/index.html",
-                  {"slides": slides, })
+                  {"slides": slides,
+                   "categories": categories, })
 
 
 def product_list(request, category_slug=None):
