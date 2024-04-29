@@ -1,11 +1,13 @@
+from datetime import timedelta
+from django.utils import timezone
 from django.shortcuts import (
     render,
     get_object_or_404,
 )
-from django.db.models import Avg
+from django.db.models import Avg, Count
 from cart.forms import CartAddProductForm
 from reviews.forms import ReviewForm
-from reviews.models import Review
+from orders.models import OrderItem
 from shop.models import (
     Category,
     Product,
@@ -20,11 +22,30 @@ def index(request):
         'reviews__rate')).order_by('-avg_rate')
     if len(highest_rate_product) > 6:
         highest_rate_product = highest_rate_product[:6]
+
+    today = timezone.now().date()
+    start_date = today - timedelta(days=today.weekday())
+    end_date = start_date + timedelta(days=7)
+
+    best_sellers = OrderItem.objects.filter(order__create_at__range=(
+        start_date, end_date)).values('product') \
+        .annotate(total_sales=Count('product')) \
+        .order_by('-total_sales')
+
+    if len(best_sellers) > 4:
+        best_sellers = best_sellers[:4]
+
+    product_ids = [item['product'] for item in best_sellers]
+    best_sellers = Product.objects.filter(id__in=product_ids) \
+        .annotate(avg_rate=Avg('reviews__rate'),
+                  rate_count=Count('reviews__rate'))
+
     return render(request,
                   "shop/index.html",
                   {"slides": slides,
                    "categories": categories,
-                   "highest_rate_product": highest_rate_product, })
+                   "highest_rate_product": highest_rate_product,
+                   "best_sellers_product": best_sellers, })
 
 
 def product_list(request, category_slug=None):
@@ -44,7 +65,10 @@ def product_list(request, category_slug=None):
     product_exist = True
     products_description = ""
     categories = Category.objects.all()
-    products = Product.objects.filter(available=True,)
+    products = Product.objects.filter(available=True,) \
+        .annotate(avg_rate=Avg('reviews__rate'),
+                  rate_count=Count('reviews__rate'))
+
     wishlist_products = []
     if request.user.is_authenticated:
         user = request.user

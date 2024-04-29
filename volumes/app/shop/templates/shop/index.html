@@ -240,7 +240,7 @@
       <div class="top-products-area clearfix py-3">
         <div class="container">
           <div class="section-heading d-flex align-items-center justify-content-between">
-            <h6 class="ml-1">محصولات برتر</h6><a class="btn btn-danger btn-sm" href="shop-grid.html">مشاهده همه</a>
+            <h6 class="ml-1">محصولات برتر</h6><a class="btn btn-danger btn-sm" href="{% url 'shop:product_list' %}?style=grid">مشاهده همه</a>
           </div>
           <div class="row g-3">
             {% for product in highest_rate_product %}
@@ -277,57 +277,31 @@
       <div class="weekly-best-seller-area py-3">
         <div class="container">
           <div class="section-heading d-flex align-items-center justify-content-between">
-            <h6 class="pl-1">هفتگی بهترین فروشندگان</h6><a class="btn btn-success btn-sm" href="shop-list.html">مشاهده همه</a>
+            <h6 class="pl-1">هفتگی بهترین فروشندگان</h6><a class="btn btn-success btn-sm" href="{% url 'shop:product_list' %}?style=list">مشاهده همه</a>
           </div>
           <div class="row g-3">
-            <!-- Single Weekly Product Card-->
+            {% for product in best_sellers_product %}
+            <!-- Single Weekly Product Card - listview-->
             <div class="col-12 col-md-6">
               <div class="card weekly-product-card">
                 <div class="card-body d-flex align-items-center">
-                  <div class="product-thumbnail-side"><span class="badge badge-success">فروش</span><a class="wishlist-btn" href="#"><i class="lni lni-heart"></i></a><a class="product-thumbnail d-block" href="single-product.html"><img src="{% static 'front/img/product/10.png' %}" alt=""></a></div>
-                  <div class="product-description"><a class="product-title d-block" href="single-product.html">مبل قرمز مدرن</a>
-                    <p class="sale-price"><i class="lni lni-dollar"></i>50 تومان <span>90 تومان</span></p>
-                    <div class="product-rating"><i class="lni lni-star-filled"></i>4.88 (39)</div><a class="btn btn-success btn-sm add2cart-notify" href="#"><i class="mr-1 lni lni-cart"></i>خرید</a>
+                  <div class="product-thumbnail-side"><span class="badge badge-success">فروش</span><a class="wishlist-btn" href="{% url 'accounts:add_remove_wishlist' product.id %}">{% if user.is_authenticated and product.id in wishlist_products %}<i class="lni lni-heart-filled"></i>{% else %}<i class="lni lni-heart"></i>{% endif %}</a><a class="product-thumbnail d-block" href="{{ product.get_absolute_url }}"><img src="{% if product.image %} {{ product.image.url }} {% else %} {% static 'front/img/nopic.jpg' %} {% endif %}" alt=""></a></div>
+                  <div class="product-description"><a class="product-title d-block" href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+                  <p class="sale-price"><i class="lni lni-dollar"></i>{{ product.price|floatformat:-2|intcomma  }} تومان</p>
+                  <div class="product-rating"><i class="lni lni-star-filled"></i>{% if product.avg_rate %} {{ product.avg_rate }} {% else %} 0 {% endif %}({{ product.rate_count }})</div><a class="btn btn-success btn-sm add2cart-notify" onclick="document.getElementById('{{ product.id }}').submit()" href="#"><i class="mr-1 lni lni-cart"></i>خرید</a>
+                  <!-- Add to cart -->
+                  <form id="{{ product.id }}" class="cart-form" action="{% url 'cart:cart_add' product.id %}" method="post">
+                    {{ cart_product_form.quantity.as_hidden }}
+                    {{ cart_product_form.override }}
+                    {% csrf_token %}
+                  </form>
                   </div>
                 </div>
               </div>
             </div>
-            <!-- Single Weekly Product Card-->
-            <div class="col-12 col-md-6">
-              <div class="card weekly-product-card">
-                <div class="card-body d-flex align-items-center">
-                  <div class="product-thumbnail-side"><span class="badge badge-primary">فروش</span><a class="wishlist-btn" href="#"><i class="lni lni-heart"></i></a><a class="product-thumbnail d-block" href="single-product.html"><img src="{% static 'front/img/product/7.png' %}" alt=""></a></div>
-                  <div class="product-description"><a class="product-title d-block" href="single-product.html">صندلی اداری</a>
-                    <p class="sale-price"><i class="lni lni-dollar"></i>50 تومان <span>90 تومان</span></p>
-                    <div class="product-rating"><i class="lni lni-star-filled"></i>4.82 (125)</div><a class="btn btn-success btn-sm add2cart-notify" href="#"><i class="mr-1 lni lni-cart"></i>خرید</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- Single Weekly Product Card-->
-            <div class="col-12 col-md-6">
-              <div class="card weekly-product-card">
-                <div class="card-body d-flex align-items-center">
-                  <div class="product-thumbnail-side"><span class="badge badge-danger">-10٪</span><a class="wishlist-btn" href="#"><i class="lni lni-heart"></i></a><a class="product-thumbnail d-block" href="single-product.html"><img src="{% static 'front/img/product/12.png' %}" alt=""></a></div>
-                  <div class="product-description"><a class="product-title d-block" href="single-product.html">عینک آفتابی</a>
-                    <p class="sale-price"><i class="lni lni-dollar"></i>40 تومان <span>60 تومان</span></p>
-                    <div class="product-rating"><i class="lni lni-star-filled"></i>4.79 (63)</div><a class="btn btn-success btn-sm add2cart-notify" href="#"><i class="mr-1 lni lni-cart"></i>خرید</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- Single Weekly Product Card-->
-            <div class="col-12 col-md-6">
-              <div class="card weekly-product-card">
-                <div class="card-body d-flex align-items-center">
-                  <div class="product-thumbnail-side"><span class="badge badge-warning">جدید</span><a class="wishlist-btn" href="#"><i class="lni lni-heart"></i></a><a class="product-thumbnail d-block" href="single-product.html"><img src="{% static 'front/img/product/13.png' %}" alt=""></a></div>
-                  <div class="product-description"><a class="product-title d-block" href="single-product.html">ساعت دیواری</a>
-                    <p class="sale-price"><i class="lni lni-dollar"></i>40 تومان <span>60 تومان</span></p>
-                    <div class="product-rating"><i class="lni lni-star-filled"></i>4.99 (7)</div><a class="btn btn-success btn-sm add2cart-notify" href="#"><i class="mr-1 lni lni-cart"></i>خرید</a>
-                  </div>
-                </div>
-              </div>
-            </div>
+            {% empty %}
+
+            {% endfor %}
           </div>
         </div>
       </div>

@@ -248,7 +248,7 @@
 						<div class="product-thumbnail-side"><span class="badge badge-success">فروش</span><a class="wishlist-btn" href="{% url 'accounts:add_remove_wishlist' product.id %}">{% if user.is_authenticated and product.id in wishlist_products %}<i class="lni lni-heart-filled"></i>{% else %}<i class="lni lni-heart"></i>{% endif %}</a><a class="product-thumbnail d-block" href="{{ product.get_absolute_url }}"><img src="{% if product.image %} {{ product.image.url }} {% else %} {% static 'front/img/nopic.jpg' %} {% endif %}" alt=""></a></div>
 						<div class="product-description"><a class="product-title d-block" href="{{ product.get_absolute_url }}">{{ product.name }}</a>
 						<p class="sale-price"><i class="lni lni-dollar"></i>{{ product.price|floatformat:-2|intcomma  }} تومان</p>
-						<div class="product-rating"><i class="lni lni-star-filled"></i>4.88 (39)</div><a class="btn btn-success btn-sm add2cart-notify" onclick="document.getElementById('{{ product.id }}').submit()" href="#"><i class="mr-1 lni lni-cart"></i>خرید</a>
+						<div class="product-rating"><i class="lni lni-star-filled"></i>{% if product.avg_rate %} {{ product.avg_rate }} {% else %} 0 {% endif %}({{ product.rate_count }})</div><a class="btn btn-success btn-sm add2cart-notify" onclick="document.getElementById('{{ product.id }}').submit()" href="#"><i class="mr-1 lni lni-cart"></i>خرید</a>
 						<!-- Add to cart -->
 						<form id="{{ product.id }}" class="cart-form" action="{% url 'cart:cart_add' product.id %}" method="post">
 							{{ cart_product_form.quantity.as_hidden }}
