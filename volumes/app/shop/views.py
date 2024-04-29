@@ -2,8 +2,10 @@ from django.shortcuts import (
     render,
     get_object_or_404,
 )
+from django.db.models import Avg
 from cart.forms import CartAddProductForm
 from reviews.forms import ReviewForm
+from reviews.models import Review
 from shop.models import (
     Category,
     Product,
@@ -14,10 +16,15 @@ from website.models import Slider
 def index(request):
     slides = Slider.objects.filter(status=True)
     categories = Category.objects.all()
+    highest_rate_product = Product.objects.annotate(avg_rate=Avg(
+        'reviews__rate')).order_by('-avg_rate')
+    if len(highest_rate_product) > 6:
+        highest_rate_product = highest_rate_product[:6]
     return render(request,
                   "shop/index.html",
                   {"slides": slides,
-                   "categories": categories, })
+                   "categories": categories,
+                   "highest_rate_product": highest_rate_product, })
 
 
 def product_list(request, category_slug=None):

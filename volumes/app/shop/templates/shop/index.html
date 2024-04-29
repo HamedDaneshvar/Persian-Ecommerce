@@ -1,5 +1,6 @@
 {% extends 'shop/shop-base.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block title %}
 فروشگاه فارسی
@@ -242,67 +243,31 @@
             <h6 class="ml-1">محصولات برتر</h6><a class="btn btn-danger btn-sm" href="shop-grid.html">مشاهده همه</a>
           </div>
           <div class="row g-3">
-            <!-- Single Top Product Card-->
-            <div class="col-6 col-md-4 col-lg-3">
-              <div class="card top-product-card">
-                <div class="card-body"><span class="badge badge-success">فروش</span><a class="wishlist-btn" href="#"><i class="lni lni-heart"></i></a><a class="product-thumbnail d-block" href="single-product.html"><img class="mb-2" src="{% static 'front/img/product/11.png' %}" alt=""></a><a class="product-title d-block" href="single-product.html">نام محصول</a>
-                  <p class="sale-price">36 تومان <span class="real-price"> 65 تومان</span></p>
-                  <div class="product-rating"><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i></div><a class="btn btn-success btn-sm add2cart-notify" href="#"><i class="lni lni-plus"></i></a>
+            {% for product in highest_rate_product %}
+              <!-- Single Top Product Card-->
+              <div class="col-6 col-md-4 col-lg-3">
+                <div class="card top-product-card">
+                  <div class="card-body"><span class="badge badge-success">فروش</span><a class="wishlist-btn" href="{% url 'accounts:add_remove_wishlist' product.id %}">{% if user.is_authenticated and product.id in wishlist_products %}<i class="lni lni-heart-filled"></i>{% else %}<i class="lni lni-heart"></i>{% endif %}</a><a class="product-thumbnail d-block" href="{{ product.get_absolute_url }}"><img class="mb-2" src="{% if product.image %} {{ product.image.url }} {% else %} {% static 'front/img/nopic.jpg' %} {% endif %}" alt=""></a><a class="product-title d-block" href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+                  <p class="sale-price">{{ product.price|floatformat:-2|intcomma }} تومان</p>
+                  <div class="product-rating"><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i></div><a class="btn btn-success btn-sm add2cart-notify" onclick="document.getElementById('{{ product.id }}').submit()" href="#"><i class="lni lni-plus"></i></a>
+                  
+                  <!-- Add to cart -->
+                  <form id="{{ product.id }}" class="cart-form" action="{% url 'cart:cart_add' product.id %}" method="post">
+                    {{ cart_product_form.quantity.as_hidden }}
+                    {{ cart_product_form.override }}
+                    {% csrf_token %}
+                  </form>
+                  </div>
                 </div>
               </div>
-            </div>
-            <!-- Single Top Product Card-->
-            <div class="col-6 col-md-4 col-lg-3">
-              <div class="card top-product-card">
-                <div class="card-body"><span class="badge badge-primary">جدید</span><a class="wishlist-btn" href="#"><i class="lni lni-heart"></i></a><a class="product-thumbnail d-block" href="single-product.html"><img class="mb-2" src="{% static 'front/img/product/5.png' %}" alt=""></a><a class="product-title d-block" href="single-product.html">مبل چوبی</a>
-                  <p class="sale-price">46 تومان <span class="real-price"> 65 تومان</span></p>
-                  <div class="product-rating"><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i></div><a class="btn btn-success btn-sm add2cart-notify" href="#"><i class="lni lni-plus"></i></a>
-                </div>
-              </div>
-            </div>
-            <!-- Single Top Product Card-->
-            <div class="col-6 col-md-4 col-lg-3">
-              <div class="card top-product-card">
-                <div class="card-body"><span class="badge badge-success">فروش</span><a class="wishlist-btn" href="#"><i class="lni lni-heart"></i></a><a class="product-thumbnail d-block" href="single-product.html"><img class="mb-2" src="{% static 'front/img/product/6.png' %}" alt=""></a><a class="product-title d-block" href="single-product.html">لامپ سقفی</a>
-                  <p class="sale-price">46 تومان <span class="real-price"> 75 تومان</span></p>
-                  <div class="product-rating"><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i></div><a class="btn btn-success btn-sm add2cart-notify" href="#"><i class="lni lni-plus"></i></a>
-                </div>
-              </div>
-            </div>
-            <!-- Single Top Product Card-->
-            <div class="col-6 col-md-4 col-lg-3">
-              <div class="card top-product-card">
-                <div class="card-body"><span class="badge badge-danger">%14</span><a class="wishlist-btn" href="#"><i class="lni lni-heart"></i></a><a class="product-thumbnail d-block" href="single-product.html"><img class="mb-2" src="{% static 'front/img/product/9.png' %}" alt=""></a><a class="product-title d-block" href="single-product.html">کفش کتانی</a>
-                  <p class="sale-price">65 تومان <span class="real-price"> 95 تومان</span></p>
-                  <div class="product-rating"><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i></div><a class="btn btn-success btn-sm add2cart-notify" href="#"><i class="lni lni-plus"></i></a>
-                </div>
-              </div>
-            </div>
-            <!-- Single Top Product Card-->
-            <div class="col-6 col-md-4 col-lg-3">
-              <div class="card top-product-card">
-                <div class="card-body"><span class="badge badge-danger">%11</span><a class="wishlist-btn" href="#"><i class="lni lni-heart"></i></a><a class="product-thumbnail d-block" href="single-product.html"><img class="mb-2" src="{% static 'front/img/product/8.png' %}" alt=""></a><a class="product-title d-block" href="single-product.html">صندلی چوبی</a>
-                  <p class="sale-price">46 تومان <span class="real-price"> 75 تومان</span></p>
-                  <div class="product-rating"><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i></div><a class="btn btn-success btn-sm add2cart-notify" href="#"><i class="lni lni-plus"></i></a>
-                </div>
-              </div>
-            </div>
-            <!-- Single Top Product Card-->
-            <div class="col-6 col-md-4 col-lg-3">
-              <div class="card top-product-card">
-                <div class="card-body"><span class="badge badge-warning">داغ</span><a class="wishlist-btn" href="#"><i class="lni lni-heart"></i></a><a class="product-thumbnail d-block" href="single-product.html"><img class="mb-2" src="{% static 'front/img/product/4.png' %}" alt=""></a><a class="product-title d-block" href="single-product.html">پیراهن چوگان</a>
-                  <p class="sale-price">46 تومان <span class="real-price"> 75 تومان</span></p>
-                  <div class="product-rating"><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i><i class="lni lni-star-filled"></i></div><a class="btn btn-success btn-sm add2cart-notify" href="#"><i class="lni lni-plus"></i></a>
-                </div>
-              </div>
-            </div>
+            {% endfor %}
           </div>
         </div>
       </div>
       <!-- Cool Facts Area-->
       <div class="cta-area">
         <div class="container">
-          <div class="cta-text p-4 p-lg-5" style="background-image: url(img/bg-img/24.jpg)">
+          <div class="cta-text p-4 p-lg-5" style="background-image: url({% static 'front/img/bg-img/24.jpg' %})">
             <h4>فروش زمستانی 50٪ تخفیف</h4>
             <p>سوها <br>الگوی تلفن همراه چند منظوره ، خلاق و مدرن است.</p><a class="btn btn-danger" href="#">خرید امروز</a>
           </div>
