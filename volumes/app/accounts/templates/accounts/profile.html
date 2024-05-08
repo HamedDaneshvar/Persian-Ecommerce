@@ -16,8 +16,8 @@
 	  <div class="logo-wrapper"><a href="#"><img src="{% static 'front/img/core-img/logo-small.png' %}" alt=""></a></div>
 	  <!-- Search Form-->
 	  <div class="top-search-form">
-		<form action="#" method="">
-		  <input class="form-control" type="search" placeholder="کلمه کلیدی خود را وارد کنید">
+		<form action="{% url 'shop:product_list' %}" method="">
+		  <input name="q" class="form-control" type="search" placeholder="کلمه کلیدی خود را وارد کنید">
 		  <button type="submit"><i class="fa fa-search"></i></button>
 		</form>
 	  </div>

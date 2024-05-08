@@ -83,6 +83,10 @@ def product_list(request, category_slug=None):
         .annotate(avg_rate=Avg('reviews__rate'),
                   rate_count=Count('reviews__rate'))
 
+    # search query
+    if search_q := request.GET.get("q"):
+        products = products.filter(name__icontains=search_q)
+
     wishlist_products = []
     if request.user.is_authenticated:
         user = request.user
