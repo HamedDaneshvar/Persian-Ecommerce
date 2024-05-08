@@ -320,9 +320,23 @@
       <div class="featured-products-wrapper py-3">
         <div class="container">
           <div class="section-heading d-flex align-items-center justify-content-between">
-            <h6 class="pl-1">محصولات برجسته</h6><a class="btn btn-warning btn-sm" href="featured-products.html">مشاهده همه</a>
+            <h6 class="pl-1">محصولات برجسته</h6><a class="btn btn-warning btn-sm" href="{% url 'shop:product_list' %}?style=grid">مشاهده همه</a>
           </div>
           <div class="row g-3">
+            
+            {% for product in featured_products %}
+              <!-- Featured Product Card-->
+            <div class="col-6 col-md-4 col-lg-3">
+              <div class="card featured-product-card">
+                <div class="card-body"><span class="badge badge-warning custom-badge"><i class="lni lni-star"></i></span>
+                  <div class="product-thumbnail-side"><a class="wishlist-btn" href="{% url 'accounts:add_remove_wishlist' product.id %}">{% if user.is_authenticated and product.id in wishlist_products %}<i class="lni lni-heart-filled"></i>{% else %}<i class="lni lni-heart"></i>{% endif %}</a><a class="product-thumbnail d-block" href="{{ product.get_absolute_url }}"><img src="{% if product.image %} {{ product.image.url }} {% else %} {% static 'front/img/nopic.jpg' %} {% endif %}" alt=""></a></div>
+                  <div class="product-description"><a class="product-title d-block" href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+                    <p class="sale-price">{{ product.price|floatformat:-2|intcomma  }} تومان</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% empty %}
             <!-- Featured Product Card-->
             <div class="col-6 col-md-4 col-lg-3">
               <div class="card featured-product-card">
@@ -367,6 +381,7 @@
                 </div>
               </div>
             </div>
+            {% endfor %}
           </div>
         </div>
       </div>

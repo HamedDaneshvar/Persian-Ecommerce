@@ -40,12 +40,26 @@ def index(request):
         .annotate(avg_rate=Avg('reviews__rate'),
                   rate_count=Count('reviews__rate'))
 
+    featured_products = Product.objects.annotate(num_users=Count(
+        'users_wishlist')).order_by('-num_users')
+
+    if len(featured_products) > 4:
+        featured_products = featured_products[:4]
+
+    wishlist_products = []
+    if request.user.is_authenticated:
+        user = request.user
+        wishlist_products = user.user_wishlist.filter(available=True)\
+            .values_list('id', flat=True)
+
     return render(request,
                   "shop/index.html",
                   {"slides": slides,
                    "categories": categories,
                    "highest_rate_product": highest_rate_product,
-                   "best_sellers_product": best_sellers, })
+                   "best_sellers_product": best_sellers,
+                   "featured_products": featured_products,
+                   "wishlist_products": wishlist_products, })
 
 
 def product_list(request, category_slug=None):
